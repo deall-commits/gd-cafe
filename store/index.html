@@ -216,6 +216,22 @@ input, select, textarea {
   font-size: 17px; color: var(--ink-2); font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
+/* ---------- 함께하는 브랜드 ---------- */
+.ateliers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; margin-top: 52px; text-align: left; }
+.atelier figure { margin: 0; }
+.atelier .ph {
+  aspect-ratio: 4 / 3; overflow: hidden; background: var(--panel);
+  border: 1px solid var(--line); margin-bottom: 20px;
+}
+.atelier .ph img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.92); }
+.atelier .a-role { font-size: 11px; letter-spacing: .24em; color: var(--gold); margin-bottom: 8px; }
+.atelier h3 { font-size: 17px; margin-bottom: 2px; }
+.atelier .a-ko { font-size: 12.5px; color: var(--ink-3); margin-bottom: 10px; }
+.atelier p { color: var(--ink-2); font-size: 13.5px; margin: 0; line-height: 1.65; }
+.atelier .a-where {
+  display: block; margin-top: 10px; font-size: 12px; color: var(--ink-3);
+  border-top: 1px solid var(--line); padding-top: 10px;
+}
 .sig-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 52px; }
 .sig-card {
   text-align: center; padding: 30px 10px 0;
@@ -556,6 +572,7 @@ footer .f-mono { font-family: var(--serif); font-size: 20px; color: var(--gold-d
 
 /* ---------- 반응형 ---------- */
 @media (max-width: 900px) {
+  .ateliers { grid-template-columns: 1fr; gap: 44px; }
   .pillars { grid-template-columns: 1fr 1fr; gap: 34px 0; }
   .pillar:nth-child(3) { border-left: 0; }
   .ritual { grid-template-columns: 1fr; gap: 26px; }
@@ -673,6 +690,52 @@ var GD_MODE = "store";
         <div class="ritual-step">
           <div class="r-num">5</div>
           <h3>소장</h3><p>두 장의 오늘</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section center">
+      <div class="kicker">Our Ateliers</div>
+      <h2>GD의 테이블을 채우는 곳</h2>
+      <p class="lead" style="margin:0 auto; color:var(--ink-3); font-size:14px">
+        세 공방에서 매일 받아 GD의 잔 곁에 놓습니다.
+      </p>
+      <div class="ateliers">
+        <div class="atelier">
+          <figure>
+            <div class="ph"><img src="img/otteokhae.jpg" alt="오떡해의 첫돌 백설기와 오색 떡" loading="lazy"></div>
+            <figcaption>
+              <div class="a-role">RICE CAKE</div>
+              <h3>오떡해</h3>
+              <div class="a-ko">O TTEOK HAE</div>
+              <p>백일과 첫돌의 답례떡으로 이름을 알린 전통 떡 공방. 백설기와 오색 송편을 오늘의 잔 곁에 놓습니다.</p>
+              <span class="a-where">서울 강북 · 판교</span>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="atelier">
+          <figure>
+            <div class="ph"><img src="img/easterseoul.jpg" alt="EASTER SEOUL의 블루 플로럴 디저트 패키지" loading="lazy"></div>
+            <figcaption>
+              <div class="a-role">PATISSERIE</div>
+              <h3>EASTER SEOUL</h3>
+              <div class="a-ko">이스터 서울</div>
+              <p>용산에서 시작해 갤러리아 명품관과 현대백화점으로 이어진 프리미엄 수제 디저트. 휘낭시에가 대표작입니다.</p>
+              <span class="a-where">용산 본점 · 백화점 입점</span>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="atelier">
+          <figure>
+            <div class="ph"><img src="img/bagelist.jpg" alt="BAGELIST의 약국 서랍장 위에 진열된 베이글" loading="lazy"></div>
+            <figcaption>
+              <div class="a-role">BAGEL</div>
+              <h3>BAGELIST</h3>
+              <div class="a-ko">베이글리스트</div>
+              <p>Bagel + Specialist. 18세기 프랑스 약국에서 영감을 얻은 공간에서 매일 반죽해 굽습니다.</p>
+              <span class="a-where">마곡 본점 · 현대 압구정본점</span>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </div>
@@ -851,6 +914,14 @@ const MENU = [
     { id:"ds7", name:"피스타치오 크루아상", price:6500, desc:"시칠리아 피스타치오 크림" },
     { id:"ds8", name:"까눌레", price:4500, desc:"럼과 바닐라 · 겉은 캐러멜" },
   ]},
+  { cat: "브랜드 디저트", items: [
+    { id:"bp1", name:"오떡해 백설기", price:5000, desc:"오떡해 · 담백한 우리 쌀 백설기", tag:"오떡해" },
+    { id:"bp2", name:"오떡해 오색 송편", price:6000, desc:"오떡해 · 다섯 빛깔 한 접시", tag:"오떡해" },
+    { id:"bp3", name:"이스터 휘낭시에", price:5500, desc:"EASTER SEOUL · 브라운버터 · 대표작", tag:"EASTER SEOUL" },
+    { id:"bp4", name:"이스터 디저트 박스", price:24000, desc:"EASTER SEOUL · 선물용 어소트먼트", tag:"EASTER SEOUL" },
+    { id:"bp5", name:"플레인 베이글", price:5500, desc:"BAGELIST · 크림치즈 곁들임", tag:"BAGELIST" },
+    { id:"bp6", name:"에브리띵 베이글", price:6500, desc:"BAGELIST · 양파 · 참깨 · 소금", tag:"BAGELIST" },
+  ]},
 ];
 const HAIR = [
   { id:"h1", name:"시스루 레이어드", desc:"얼굴선을 살리는 긴 웨이브" },
@@ -884,8 +955,11 @@ function freshDB() {
   return { v: 2, orders: [], credits: [], switches: [], closes: [],
            menuOverrides: {}, customItems: [], pin: "7160" };
 }
-function migrate(d) {
-  if (!d.v || d.v < 2) {
+/* 저장된 원본(raw)의 버전을 보고 기본값과 병합한다.
+   병합 후에 버전을 검사하면 freshDB()의 v가 섞여 구버전이 항상 최신으로 보인다. */
+function migrate(raw) {
+  const d = Object.assign(freshDB(), raw);
+  if (!raw || !raw.v || raw.v < 2) {
     (d.orders || []).forEach(o => {
       if (!o.status) o.status = "served";
       if (!o.otype) o.otype = "홀";
@@ -902,8 +976,8 @@ function migrate(d) {
 }
 function loadDB() {
   try {
-    const d = JSON.parse(localStorage.getItem(DB_KEY));
-    if (d && Array.isArray(d.orders)) return migrate(Object.assign(freshDB(), d));
+    const raw = JSON.parse(localStorage.getItem(DB_KEY));
+    if (raw && Array.isArray(raw.orders)) return migrate(raw);
   } catch (e) {}
   return freshDB();
 }
@@ -2198,7 +2272,7 @@ function renderOps() {
       try {
         const d = JSON.parse(rd.result);
         if (!d || !Array.isArray(d.orders)) throw new Error("형식 오류");
-        DB = migrate(Object.assign(freshDB(), d));
+        DB = migrate(d);
         saveDB(); renderOps(); toast("백업을 복원했습니다.");
       } catch (e) { toast("복원 실패 — 올바른 백업 파일이 아닙니다."); }
     };
