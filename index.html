@@ -8,6 +8,412 @@
 <title>GD카페 — 검은 샹들리에 아래, 오늘의 나</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0908'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23e9d3a0'%3EGD%3C/text%3E%3C/svg%3E">
+<link rel="canonical" href="https://deall-commits.github.io/gd-cafe/">
+<meta name="robots" content="index,follow">
+<meta property="og:url" content="https://deall-commits.github.io/gd-cafe/">
+<meta property="og:site_name" content="GD카페">
+<!-- 검색·크롤러용 구조화 데이터 (schema.org). 메뉴 변경 시 아래 MENU 배열 및
+     메뉴 섹션 <noscript> 폴백과 함께 갱신할 것. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CafeOrCoffeeShop",
+  "name": "GD카페",
+  "description": "청담 GD카페 — 검은 샹들리에 아래에서, 한 잔의 주문이 한 번의 변신이 되는 곳.",
+  "url": "https://deall-commits.github.io/gd-cafe/",
+  "servesCuisine": [
+    "커피",
+    "디저트",
+    "베이커리"
+  ],
+  "priceRange": "₩₩",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "삼성로 716 (청담동) 2층",
+    "addressLocality": "강남구",
+    "addressRegion": "서울특별시",
+    "addressCountry": "KR"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "11:00",
+      "closes": "22:00"
+    }
+  ],
+  "hasMenu": {
+    "@type": "Menu",
+    "name": "GD카페 메뉴",
+    "hasMenuSection": [
+      {
+        "@type": "MenuSection",
+        "name": "시그니처",
+        "hasMenuItem": [
+          {
+            "@type": "MenuItem",
+            "name": "샹들리에 라떼",
+            "description": "카라멜라이즈드 크림 · 금박",
+            "offers": {
+              "@type": "Offer",
+              "price": "9500",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "청담 크림 커피",
+            "description": "더블샷 위 바닐라 스노우 크림",
+            "offers": {
+              "@type": "Offer",
+              "price": "9000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "흑임자 크림 라떼",
+            "description": "국산 흑임자 · 고소한 피니시",
+            "offers": {
+              "@type": "Offer",
+              "price": "8500",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "벨벳 아인슈페너",
+            "description": "진한 샷과 벨벳 같은 휘핑",
+            "offers": {
+              "@type": "Offer",
+              "price": "9000",
+              "priceCurrency": "KRW"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "커피",
+        "hasMenuItem": [
+          {
+            "@type": "MenuItem",
+            "name": "에스프레소",
+            "description": "시즌 블렌드 · 데미타세 잔 제공",
+            "offers": {
+              "@type": "Offer",
+              "price": "6000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "아메리카노",
+            "description": "산미와 단맛의 밸런스",
+            "offers": {
+              "@type": "Offer",
+              "price": "7000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "카페 라떼",
+            "description": "실키한 스팀 밀크",
+            "offers": {
+              "@type": "Offer",
+              "price": "7500",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "플랫 화이트",
+            "description": "리스트레토 더블 · 진한 바디",
+            "offers": {
+              "@type": "Offer",
+              "price": "8000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "바닐라빈 라떼",
+            "description": "마다가스카르 바닐라빈 시럽",
+            "offers": {
+              "@type": "Offer",
+              "price": "8500",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "헤이즐넛 프랄린 라떼",
+            "description": "직접 만든 프랄린 페이스트",
+            "offers": {
+              "@type": "Offer",
+              "price": "8500",
+              "priceCurrency": "KRW"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "브루잉",
+        "hasMenuItem": [
+          {
+            "@type": "MenuItem",
+            "name": "에티오피아 예가체프 G1",
+            "description": "플로럴 · 시트러스 · 핸드드립",
+            "offers": {
+              "@type": "Offer",
+              "price": "9000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "파나마 게이샤 리저브",
+            "description": "자스민 · 베르가못 · 한정 수량",
+            "offers": {
+              "@type": "Offer",
+              "price": "15000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "콜드브루 리저브",
+            "description": "18시간 저온 추출",
+            "offers": {
+              "@type": "Offer",
+              "price": "8500",
+              "priceCurrency": "KRW"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "논커피 · 티",
+        "hasMenuItem": [
+          {
+            "@type": "MenuItem",
+            "name": "제주 말차 라떼",
+            "description": "세작 말차 · 진하게 격불",
+            "offers": {
+              "@type": "Offer",
+              "price": "8500",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "얼그레이 밀크티",
+            "description": "베르가못 향의 클래식",
+            "offers": {
+              "@type": "Offer",
+              "price": "8000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "자몽 허니 블랙티",
+            "description": "생자몽 · 아카시아 꿀",
+            "offers": {
+              "@type": "Offer",
+              "price": "8000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "프리미엄 티 셀렉션",
+            "description": "다즐링 · 캐모마일 · 페퍼민트 중 선택",
+            "offers": {
+              "@type": "Offer",
+              "price": "7500",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "시그니처 에이드",
+            "description": "청포도 또는 자몽 · 탄산",
+            "offers": {
+              "@type": "Offer",
+              "price": "8000",
+              "priceCurrency": "KRW"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "디저트",
+        "hasMenuItem": [
+          {
+            "@type": "MenuItem",
+            "name": "샹들리에 케이크",
+            "description": "블랙 크리스탈 글레이즈드 무스 · 1일 12개",
+            "offers": {
+              "@type": "Offer",
+              "price": "12000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "발로나 초콜릿 테린느",
+            "description": "발로나 과나하 70%",
+            "offers": {
+              "@type": "Offer",
+              "price": "9500",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "바스크 치즈케이크",
+            "description": "진한 번트 치즈",
+            "offers": {
+              "@type": "Offer",
+              "price": "8500",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "몽블랑",
+            "description": "밤 크림 · 머랭 · 시즌 한정",
+            "offers": {
+              "@type": "Offer",
+              "price": "10000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "시즌 프루트 타르트",
+            "description": "제철 과일 · 아몬드 크림",
+            "offers": {
+              "@type": "Offer",
+              "price": "9000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "마스카포네 티라미수",
+            "description": "에스프레소에 적신 사보이아르디",
+            "offers": {
+              "@type": "Offer",
+              "price": "9000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "피스타치오 크루아상",
+            "description": "시칠리아 피스타치오 크림",
+            "offers": {
+              "@type": "Offer",
+              "price": "6500",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "까눌레",
+            "description": "럼과 바닐라 · 겉은 캐러멜",
+            "offers": {
+              "@type": "Offer",
+              "price": "4500",
+              "priceCurrency": "KRW"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "브랜드 디저트",
+        "hasMenuItem": [
+          {
+            "@type": "MenuItem",
+            "name": "오떡해 백설기",
+            "description": "오떡해 · 담백한 우리 쌀 백설기",
+            "offers": {
+              "@type": "Offer",
+              "price": "5000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "오떡해 오색 송편",
+            "description": "오떡해 · 다섯 빛깔 한 접시",
+            "offers": {
+              "@type": "Offer",
+              "price": "6000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "이스터 휘낭시에",
+            "description": "EASTER SEOUL · 브라운버터 · 대표작",
+            "offers": {
+              "@type": "Offer",
+              "price": "5500",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "이스터 디저트 박스",
+            "description": "EASTER SEOUL · 선물용 어소트먼트",
+            "offers": {
+              "@type": "Offer",
+              "price": "24000",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "플레인 베이글",
+            "description": "BAGELIST · 크림치즈 곁들임",
+            "offers": {
+              "@type": "Offer",
+              "price": "5500",
+              "priceCurrency": "KRW"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "에브리띵 베이글",
+            "description": "BAGELIST · 양파 · 참깨 · 소금",
+            "offers": {
+              "@type": "Offer",
+              "price": "6500",
+              "priceCurrency": "KRW"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+</script>
 <style>
 /* ============================================================
    GD카페 v2 — 검은 샹들리에 (단일 다크 테마, 의도적 선택)
@@ -72,6 +478,12 @@ input, select, textarea {
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
 .view { display: none; }
 .view.active { display: block; }
+.menu-fallback section { margin: 0 0 28px; }
+.menu-fallback h3 { color: var(--gold-soft); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+.menu-fallback ul { list-style: none; padding: 0; margin: 0; }
+.menu-fallback li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.menu-fallback .mf-price { color: var(--gold); float: right; }
+.menu-fallback .mf-desc { color: var(--ink-2); font-size: 14px; }
 .kicker {
   font-family: var(--serif);
   font-size: 13px;
@@ -779,6 +1191,73 @@ var GD_MODE = "public";
       <h2>메뉴</h2>
       <div class="menu-note">메뉴 1개 = <b>스타일 스위치 1회</b> · 코드는 주문 시 드립니다.</div>
       <div id="menu-list"></div>
+      <noscript>
+        <!-- JS 미실행 크롤러/브라우저용 메뉴 폴백. JS가 켜지면 이 블록은 렌더되지 않는다. -->
+        <div class="menu-fallback">
+          <section>
+            <h3>시그니처</h3>
+            <ul>
+              <li><span class="mf-name">샹들리에 라떼</span> <span class="mf-price">₩9,500</span><br><span class="mf-desc">카라멜라이즈드 크림 · 금박</span></li>
+              <li><span class="mf-name">청담 크림 커피</span> <span class="mf-price">₩9,000</span><br><span class="mf-desc">더블샷 위 바닐라 스노우 크림</span></li>
+              <li><span class="mf-name">흑임자 크림 라떼</span> <span class="mf-price">₩8,500</span><br><span class="mf-desc">국산 흑임자 · 고소한 피니시</span></li>
+              <li><span class="mf-name">벨벳 아인슈페너</span> <span class="mf-price">₩9,000</span><br><span class="mf-desc">진한 샷과 벨벳 같은 휘핑</span></li>
+            </ul>
+          </section>
+          <section>
+            <h3>커피</h3>
+            <ul>
+              <li><span class="mf-name">에스프레소</span> <span class="mf-price">₩6,000</span><br><span class="mf-desc">시즌 블렌드 · 데미타세 잔 제공</span></li>
+              <li><span class="mf-name">아메리카노</span> <span class="mf-price">₩7,000</span><br><span class="mf-desc">산미와 단맛의 밸런스</span></li>
+              <li><span class="mf-name">카페 라떼</span> <span class="mf-price">₩7,500</span><br><span class="mf-desc">실키한 스팀 밀크</span></li>
+              <li><span class="mf-name">플랫 화이트</span> <span class="mf-price">₩8,000</span><br><span class="mf-desc">리스트레토 더블 · 진한 바디</span></li>
+              <li><span class="mf-name">바닐라빈 라떼</span> <span class="mf-price">₩8,500</span><br><span class="mf-desc">마다가스카르 바닐라빈 시럽</span></li>
+              <li><span class="mf-name">헤이즐넛 프랄린 라떼</span> <span class="mf-price">₩8,500</span><br><span class="mf-desc">직접 만든 프랄린 페이스트</span></li>
+            </ul>
+          </section>
+          <section>
+            <h3>브루잉</h3>
+            <ul>
+              <li><span class="mf-name">에티오피아 예가체프 G1</span> <span class="mf-price">₩9,000</span><br><span class="mf-desc">플로럴 · 시트러스 · 핸드드립</span></li>
+              <li><span class="mf-name">파나마 게이샤 리저브</span> <span class="mf-price">₩15,000</span><br><span class="mf-desc">자스민 · 베르가못 · 한정 수량</span></li>
+              <li><span class="mf-name">콜드브루 리저브</span> <span class="mf-price">₩8,500</span><br><span class="mf-desc">18시간 저온 추출</span></li>
+            </ul>
+          </section>
+          <section>
+            <h3>논커피 · 티</h3>
+            <ul>
+              <li><span class="mf-name">제주 말차 라떼</span> <span class="mf-price">₩8,500</span><br><span class="mf-desc">세작 말차 · 진하게 격불</span></li>
+              <li><span class="mf-name">얼그레이 밀크티</span> <span class="mf-price">₩8,000</span><br><span class="mf-desc">베르가못 향의 클래식</span></li>
+              <li><span class="mf-name">자몽 허니 블랙티</span> <span class="mf-price">₩8,000</span><br><span class="mf-desc">생자몽 · 아카시아 꿀</span></li>
+              <li><span class="mf-name">프리미엄 티 셀렉션</span> <span class="mf-price">₩7,500</span><br><span class="mf-desc">다즐링 · 캐모마일 · 페퍼민트 중 선택</span></li>
+              <li><span class="mf-name">시그니처 에이드</span> <span class="mf-price">₩8,000</span><br><span class="mf-desc">청포도 또는 자몽 · 탄산</span></li>
+            </ul>
+          </section>
+          <section>
+            <h3>디저트</h3>
+            <ul>
+              <li><span class="mf-name">샹들리에 케이크</span> <span class="mf-price">₩12,000</span><br><span class="mf-desc">블랙 크리스탈 글레이즈드 무스 · 1일 12개</span></li>
+              <li><span class="mf-name">발로나 초콜릿 테린느</span> <span class="mf-price">₩9,500</span><br><span class="mf-desc">발로나 과나하 70%</span></li>
+              <li><span class="mf-name">바스크 치즈케이크</span> <span class="mf-price">₩8,500</span><br><span class="mf-desc">진한 번트 치즈</span></li>
+              <li><span class="mf-name">몽블랑</span> <span class="mf-price">₩10,000</span><br><span class="mf-desc">밤 크림 · 머랭 · 시즌 한정</span></li>
+              <li><span class="mf-name">시즌 프루트 타르트</span> <span class="mf-price">₩9,000</span><br><span class="mf-desc">제철 과일 · 아몬드 크림</span></li>
+              <li><span class="mf-name">마스카포네 티라미수</span> <span class="mf-price">₩9,000</span><br><span class="mf-desc">에스프레소에 적신 사보이아르디</span></li>
+              <li><span class="mf-name">피스타치오 크루아상</span> <span class="mf-price">₩6,500</span><br><span class="mf-desc">시칠리아 피스타치오 크림</span></li>
+              <li><span class="mf-name">까눌레</span> <span class="mf-price">₩4,500</span><br><span class="mf-desc">럼과 바닐라 · 겉은 캐러멜</span></li>
+            </ul>
+          </section>
+          <section>
+            <h3>브랜드 디저트</h3>
+            <ul>
+              <li><span class="mf-name">오떡해 백설기</span> <span class="mf-price">₩5,000</span><br><span class="mf-desc">오떡해 · 담백한 우리 쌀 백설기</span></li>
+              <li><span class="mf-name">오떡해 오색 송편</span> <span class="mf-price">₩6,000</span><br><span class="mf-desc">오떡해 · 다섯 빛깔 한 접시</span></li>
+              <li><span class="mf-name">이스터 휘낭시에</span> <span class="mf-price">₩5,500</span><br><span class="mf-desc">EASTER SEOUL · 브라운버터 · 대표작</span></li>
+              <li><span class="mf-name">이스터 디저트 박스</span> <span class="mf-price">₩24,000</span><br><span class="mf-desc">EASTER SEOUL · 선물용 어소트먼트</span></li>
+              <li><span class="mf-name">플레인 베이글</span> <span class="mf-price">₩5,500</span><br><span class="mf-desc">BAGELIST · 크림치즈 곁들임</span></li>
+              <li><span class="mf-name">에브리띵 베이글</span> <span class="mf-price">₩6,500</span><br><span class="mf-desc">BAGELIST · 양파 · 참깨 · 소금</span></li>
+            </ul>
+          </section>
+        </div>
+      </noscript>
     </div>
   </div>
 </section>
@@ -880,6 +1359,9 @@ var GD_MODE = "public";
 /* ============================================================
    기본 데이터
    ============================================================ */
+/* ⚠ 크롤 노출용 정적 사본과 동기화 필요:
+   이 배열을 바꾸면 <head>의 JSON-LD(application/ld+json)와
+   메뉴 섹션의 <noscript> 폴백도 같이 수정하세요. */
 const MENU = [
   { cat: "시그니처", items: [
     { id:"sg1", name:"샹들리에 라떼", price:9500, desc:"카라멜라이즈드 크림 · 금박", tag:"대표" },

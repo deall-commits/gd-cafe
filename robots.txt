@@ -1,0 +1,13 @@
+# GD카페 — 크롤 정책
+# 공개 브랜드 사이트(/)는 크롤 허용, 매장 직원 앱(/store/)은 차단.
+#
+# 주의: GitHub Pages 프로젝트 사이트(user.github.io/gd-cafe/)에서는
+# 표준 검색엔진이 호스트 루트(user.github.io/robots.txt)만 읽으므로
+# 이 파일은 커스텀 도메인 연결 시 또는 파트너 자체 크롤러가
+# 사이트 경로를 직접 조회할 때 적용됩니다.
+
+User-agent: *
+Allow: /
+Disallow: /store/
+
+Sitemap: https://deall-commits.github.io/gd-cafe/sitemap.xml
