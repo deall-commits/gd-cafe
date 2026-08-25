@@ -134,6 +134,18 @@ ol.st .n{font-size:18px;font-weight:450;color:var(--mid);margin-top:4px;line-hei
 }
 .row.short td.nm,tr.short td.nm{color:#B0301E}
 tr.short{background:rgba(176,48,30,.07)}
+table.stk th.ref{font-size:14px}
+table.stk td.ref{font-size:16px;font-weight:600;color:var(--mid);white-space:nowrap;
+     padding:10px 8px;letter-spacing:-.01em}
+table.stk td.ref.up{color:#2E7D4F}
+table.stk td.ref.down{color:#B0301E}
+body.edit table.stk td.ref{background:var(--paper);border:1.5px dashed var(--rule2);
+     border-radius:6px;outline:none}
+body.edit table.stk td.ref:focus{border-style:solid;border-color:var(--bronze)}
+.memo{margin-top:20px;padding:16px 18px;border-radius:12px;background:var(--card);
+     font-size:16px;font-weight:500;color:var(--mid);line-height:1.7;word-break:keep-all}
+.memo b{display:block;font-size:14px;font-weight:700;letter-spacing:.1em;color:var(--mute);
+     margin-bottom:8px}
 table.stk td.min{font-size:18px;font-weight:600;color:var(--mute);white-space:nowrap}
 table.stk td.min b{color:var(--ink);font-weight:700;font-size:20px}
 .done2{display:inline-block;font-size:16px;font-weight:700;padding:6px 12px;border-radius:7px;
@@ -342,8 +354,9 @@ body.edit .revert{display:inline-block}
   .body{flex-direction:column;gap:14px;overflow-y:auto}
   .pane{overflow:visible}
   .panewrap{flex:0 0 auto!important}
-  table.stk td.base{display:none}
-  table.stk th.base{display:none}
+  table.stk td.base,table.stk th.base{display:none}
+  table.stk td.ref,table.stk th.ref{display:none}
+  table.stk td.ref[data-k="oq"],table.stk th.ref:first-of-type{display:table-cell}
   .panewrap.on .more{display:none}
   ol.st .rail{flex:0 0 40%}
 }
@@ -573,7 +586,7 @@ $('#clr').addEventListener('click',()=>{
 try{ const last=localStorage.getItem('gd.ipad');
      const f=D.find(x=>x.id===last); if(f) cur=f; }catch(e){}
 /* ================= 저장소 ================= */
-const KEY='gd.ops.v1', DEF={"open": [{"t": "매장 열기", "items": ["간판 · 매장 조명 켜기", "냉난방 켜기 (여름 24℃ · 겨울 22℃)", "음악 켜고 볼륨 맞추기", "출입문 · 2층 계단 쓸기", "테이블 · 의자 닦고 줄 맞추기", "화장실 점검 · 휴지 · 손비누 채우기"]}, {"t": "기계", "items": ["에스프레소 머신 전원 · 보일러 압력 9bar 확인", "그라인더 원두 채우기 (올드독 · 서울 시네마 · 디카페인)", "첫 샷 버리고 두 번째 샷 맛 보기 · 분쇄도 조정", "스팀완드 퍼지 · 행주 준비", "제빙기 얼음 양 확인", "정수 필터 · 온수 확인", "블렌더 · 쉐이커 마른 상태 확인"]}, {"t": "재료", "items": ["우유 잔량 · 유통기한 확인", "생크림 냉장 상태 확인 (휘핑볼 미리 차갑게)", "청 · 시럽 잔량 확인", "바질씨드 불려 두기", "인절미 떡 · 과일 상태 확인", "디저트 진열 (휘낭시에 · 화과자 · 허니 케이크 · 약과 2종)"]}, {"t": "판매 준비", "items": ["포스 · 카드단말기 켜기", "거스름돈 시재 확인", "테이크아웃 컵 · 홀더 · 뚜껑 채우기", "빨대 · 냅킨 · 스푼 채우기", "메뉴판 위치 · 상태 확인", "아이패드 레시피 화면 켜 두기"]}], "close": [{"t": "기계", "items": ["그룹헤드 백플러싱 · 약품 청소", "포터필터 · 바스켓 분리 세척", "스팀완드 청소 · 퍼지 · 팁 막힘 확인", "그라인더 호퍼 비우고 청소", "블렌더 · 쉐이커 세척 후 엎어서 건조", "제빙기 스쿠프 세척 · 제자리"]}, {"t": "재료 정리", "items": ["우유 · 생크림 냉장 보관", "청 · 시럽 뚜껑 닫고 제자리", "과일 · 떡 밀폐 보관 또는 폐기", "디저트 잔량 세어서 적기", "내일 발주할 것 적기 (재고 탭에서 확인)"]}, {"t": "매장", "items": ["테이블 · 의자 닦고 정리", "바닥 청소 · 쓰레기 배출", "화장실 정리", "싱크대 비우고 행주 삶기", "제빙기 · 냉장고 문 닫힘 확인"]}, {"t": "마감", "items": ["포스 정산 · 매출 확인", "현금 시재 맞추기", "카드단말기 정산", "냉난방 · 음악 · 조명 끄기", "가스 · 전기 콘센트 확인", "문단속 · CCTV 확인"]}], "stock": [{"id": "k0", "cat": "원두 · 티", "nm": "원두", "base": "17g", "use": 6}, {"id": "k1", "cat": "원두 · 티", "nm": "캐모마일 티백", "base": "1개", "use": 1}, {"id": "k2", "cat": "원두 · 티", "nm": "얼그레이 티백", "base": "1개", "use": 1}, {"id": "k3", "cat": "원두 · 티", "nm": "자스민 티백", "base": "1개", "use": 1}, {"id": "k4", "cat": "유제품", "nm": "우유", "base": "50ml · 80ml", "use": 10}, {"id": "k5", "cat": "유제품", "nm": "생크림", "base": "소량 · 100g", "use": 3}, {"id": "k6", "cat": "유제품", "nm": "휘핑크림", "base": "30ml", "use": 2}, {"id": "k7", "cat": "유제품", "nm": "연유", "base": "10ml · 20ml", "use": 2}, {"id": "k8", "cat": "가루 · 페이스트", "nm": "미숫가루", "base": "25g", "use": 1}, {"id": "k9", "cat": "가루 · 페이스트", "nm": "볶은 콩가루", "base": "5g", "use": 1}, {"id": "k10", "cat": "가루 · 페이스트", "nm": "말차 파우더", "base": "1g · 4g", "use": 1}, {"id": "k11", "cat": "가루 · 페이스트", "nm": "무가당 카카오 파우더", "base": "5g · 0.5g", "use": 2}, {"id": "k12", "cat": "가루 · 페이스트", "nm": "요거트 파우더", "base": "20g", "use": 1}, {"id": "k13", "cat": "가루 · 페이스트", "nm": "바닐라빈 페이스트", "base": "0.5g", "use": 1}, {"id": "k14", "cat": "초콜릿", "nm": "다크 커버추어 초콜릿", "base": "20g", "use": 1}, {"id": "k15", "cat": "초콜릿", "nm": "다크 초콜릿", "base": "30g", "use": 1}, {"id": "k16", "cat": "시럽 · 감미료", "nm": "바닐라 시럽", "base": "20~30ml", "use": 1}, {"id": "k17", "cat": "시럽 · 감미료", "nm": "알룰로스", "base": "7g", "use": 1}, {"id": "k18", "cat": "시럽 · 감미료", "nm": "설탕", "base": "8g", "use": 1}, {"id": "k19", "cat": "시럽 · 감미료", "nm": "꿀", "base": "적당량", "use": 1}, {"id": "k20", "cat": "시럽 · 감미료", "nm": "시럽", "base": "10ml", "use": 1}, {"id": "k21", "cat": "청 · 과육", "nm": "청귤청", "base": "45ml", "use": 1}, {"id": "k22", "cat": "청 · 과육", "nm": "유자청", "base": "40ml", "use": 1}, {"id": "k23", "cat": "청 · 과육", "nm": "블루베리청", "base": "45ml", "use": 1}, {"id": "k24", "cat": "청 · 과육", "nm": "딸기청", "base": "50g", "use": 1}, {"id": "k25", "cat": "청 · 과육", "nm": "레몬즙", "base": "5ml", "use": 1}, {"id": "k26", "cat": "생물 · 냉동", "nm": "생딸기", "base": "2알", "use": 1}, {"id": "k27", "cat": "생물 · 냉동", "nm": "냉동 블루베리", "base": "15알", "use": 1}, {"id": "k28", "cat": "생물 · 냉동", "nm": "사과 슬라이스", "base": "3장", "use": 1}, {"id": "k29", "cat": "생물 · 냉동", "nm": "청귤 슬라이스", "base": "1개", "use": 1}, {"id": "k30", "cat": "생물 · 냉동", "nm": "레몬 슬라이스", "base": "1장", "use": 1}, {"id": "k31", "cat": "생물 · 냉동", "nm": "바나나", "base": "1개", "use": 1}, {"id": "k32", "cat": "생물 · 냉동", "nm": "아보카도", "base": "1/2개", "use": 1}, {"id": "k33", "cat": "생물 · 냉동", "nm": "인절미 떡 큐브", "base": "40g + 3개", "use": 1}, {"id": "k34", "cat": "생물 · 냉동", "nm": "바닐라 아이스크림", "base": "2스쿱", "use": 1}, {"id": "k35", "cat": "생물 · 냉동", "nm": "무설탕 플레인 요거트", "base": "100g", "use": 1}, {"id": "k36", "cat": "허브 · 가니시", "nm": "애플민트", "base": "적당량", "use": 2}, {"id": "k37", "cat": "허브 · 가니시", "nm": "로즈마리", "base": "1줄기", "use": 1}, {"id": "k38", "cat": "허브 · 가니시", "nm": "식용 꽃", "base": "1~2송이", "use": 1}, {"id": "k39", "cat": "허브 · 가니시", "nm": "그래놀라 또는 카카오닙스", "base": "적당량", "use": 1}, {"id": "k40", "cat": "상시 비품", "nm": "얼음", "base": "120g", "use": 8}, {"id": "k41", "cat": "상시 비품", "nm": "물", "base": "약간 · 20ml", "use": 5}, {"id": "k42", "cat": "상시 비품", "nm": "탄산수", "base": "200ml", "use": 3}, {"id": "k43", "cat": "상시 비품", "nm": "소금", "base": "1자밤 · 한 꼬집", "use": 2}, {"id": "k44", "cat": "상시 비품", "nm": "바질씨드", "base": "2큰술", "use": 1}, {"id": "d_d1", "cat": "디저트 (완제품)", "nm": "휘낭시에", "base": "4,500원", "use": 0}, {"id": "d_d2", "cat": "디저트 (완제품)", "nm": "수제 화과자", "base": "5,000원", "use": 0}, {"id": "d_d3", "cat": "디저트 (완제품)", "nm": "허니 케이크", "base": "6,000원", "use": 0}, {"id": "d_d4", "cat": "디저트 (완제품)", "nm": "담은 약과", "base": "12,000원", "use": 0}, {"id": "d_d5", "cat": "디저트 (완제품)", "nm": "발효 약과", "base": "12,000원", "use": 0}]};
+const KEY='gd.ops.v1', DEF={"open": [{"t": "매장 열기", "items": ["간판 · 매장 조명 켜기", "냉난방 켜기 (여름 24℃ · 겨울 22℃)", "음악 켜고 볼륨 맞추기", "출입문 · 2층 계단 쓸기", "테이블 · 의자 닦고 줄 맞추기", "화장실 점검 · 휴지 · 손비누 채우기"]}, {"t": "기계", "items": ["에스프레소 머신 전원 · 보일러 압력 9bar 확인", "그라인더 원두 채우기 (올드독 · 서울 시네마 · 디카페인)", "첫 샷 버리고 두 번째 샷 맛 보기 · 분쇄도 조정", "스팀완드 퍼지 · 행주 준비", "제빙기 얼음 양 확인", "정수 필터 · 온수 확인", "블렌더 · 쉐이커 마른 상태 확인"]}, {"t": "재료", "items": ["우유 잔량 · 유통기한 확인", "생크림 냉장 상태 확인 (휘핑볼 미리 차갑게)", "청 · 시럽 잔량 확인", "바질씨드 불려 두기", "인절미 떡 · 과일 상태 확인", "디저트 진열 (휘낭시에 · 화과자 · 허니 케이크 · 약과 2종)"]}, {"t": "판매 준비", "items": ["포스 · 카드단말기 켜기", "거스름돈 시재 확인", "테이크아웃 컵 · 홀더 · 뚜껑 채우기", "빨대 · 냅킨 · 스푼 채우기", "메뉴판 위치 · 상태 확인", "아이패드 레시피 화면 켜 두기"]}], "close": [{"t": "기계", "items": ["그룹헤드 백플러싱 · 약품 청소", "포터필터 · 바스켓 분리 세척", "스팀완드 청소 · 퍼지 · 팁 막힘 확인", "그라인더 호퍼 비우고 청소", "블렌더 · 쉐이커 세척 후 엎어서 건조", "제빙기 스쿠프 세척 · 제자리"]}, {"t": "재료 정리", "items": ["우유 · 생크림 냉장 보관", "청 · 시럽 뚜껑 닫고 제자리", "과일 · 떡 밀폐 보관 또는 폐기", "디저트 잔량 세어서 적기", "내일 발주할 것 적기 (재고 탭에서 확인)"]}, {"t": "매장", "items": ["테이블 · 의자 닦고 정리", "바닥 청소 · 쓰레기 배출", "화장실 정리", "싱크대 비우고 행주 삶기", "제빙기 · 냉장고 문 닫힘 확인"]}, {"t": "마감", "items": ["포스 정산 · 매출 확인", "현금 시재 맞추기", "카드단말기 정산", "냉난방 · 음악 · 조명 끄기", "가스 · 전기 콘센트 확인", "문단속 · CCTV 확인"]}], "stock": [{"id": "o0", "cat": "발주 품목 (기준 등록)", "nm": "딸기청 1kg", "base": "50g", "use": 1, "oq": "1ea", "daily": "195g", "life": "5.1일", "ro": "3일차", "chg": "", "min": 410, "unit": "g"}, {"id": "o1", "cat": "발주 품목 (기준 등록)", "nm": "매일 우유 1L", "base": "50ml · 80ml", "use": 10, "oq": "36ea · 6팩들이 6묶음", "daily": "5.6L", "life": "6.4일", "ro": "5일차", "chg": "▲ 0.9일 → 6.4일", "min": 8, "unit": "팩"}, {"id": "o2", "cat": "발주 품목 (기준 등록)", "nm": "레몬 슬라이스 500g", "base": "1장", "use": 1, "oq": "2ea", "daily": "120g", "life": "8.3일", "ro": "6일차", "chg": "▼ 16.7일 → 8.3일", "min": 280, "unit": "g"}, {"id": "o3", "cat": "발주 품목 (기준 등록)", "nm": "휘핑크림 1L", "base": "30ml", "use": 2, "oq": "4ea", "daily": "475ml", "life": "8.4일", "ro": "6일차", "chg": "", "min": 1140, "unit": "ml"}, {"id": "o4", "cat": "발주 품목 (기준 등록)", "nm": "유자청 1kg", "base": "40ml", "use": 1, "oq": "1ea", "daily": "110g", "life": "9.1일", "ro": "7일차", "chg": "", "min": 230, "unit": "g"}, {"id": "o5", "cat": "발주 품목 (기준 등록)", "nm": "블루베리청 1kg", "base": "45ml", "use": 1, "oq": "1ea", "daily": "110g", "life": "9.1일", "ro": "7일차", "chg": "", "min": 230, "unit": "g"}, {"id": "o6", "cat": "발주 품목 (기준 등록)", "nm": "요거트 파우더 1kg", "base": "20g", "use": 1, "oq": "1ea", "daily": "100g", "life": "10일", "ro": "8일차", "chg": "", "min": 200, "unit": "g"}, {"id": "o7", "cat": "발주 품목 (기준 등록)", "nm": "레몬 시럽 700ml", "base": "", "use": 0, "oq": "1ea", "daily": "60ml", "life": "11.7일", "ro": "9일차", "chg": "", "min": 160, "unit": "ml"}, {"id": "o8", "cat": "발주 품목 (기준 등록)", "nm": "바닐라빈 파우더 1kg", "base": "", "use": 0, "oq": "1ea", "daily": "84g", "life": "11.9일", "ro": "9일차", "chg": "▲ 8.1일 → 11.9일", "min": 240, "unit": "g"}, {"id": "o9", "cat": "발주 품목 (기준 등록)", "nm": "매일 두유 950ml", "base": "", "use": 0, "oq": "10ea", "daily": "0.7팩", "life": "14일", "ro": "10일차", "chg": "", "min": 3, "unit": "팩"}, {"id": "o10", "cat": "발주 품목 (기준 등록)", "nm": "바닐라 아이스크림 5L", "base": "2스쿱", "use": 1, "oq": "1ea", "daily": "130ml", "life": "38.5일", "ro": "33일차", "chg": "▲ 16.7일 → 38.5일", "min": 715, "unit": "ml"}, {"id": "o11", "cat": "발주 품목 (기준 등록)", "nm": "치아씨드 1kg", "base": "", "use": 0, "oq": "1ea", "daily": "16g", "life": "62일", "ro": "55일차", "chg": "", "min": 110, "unit": "g"}, {"id": "k0", "cat": "원두 · 티", "nm": "원두", "base": "17g", "use": 6}, {"id": "k1", "cat": "원두 · 티", "nm": "캐모마일 티백", "base": "1개", "use": 1}, {"id": "k2", "cat": "원두 · 티", "nm": "얼그레이 티백", "base": "1개", "use": 1}, {"id": "k3", "cat": "원두 · 티", "nm": "자스민 티백", "base": "1개", "use": 1}, {"id": "k5", "cat": "유제품", "nm": "생크림", "base": "소량 · 100g", "use": 3}, {"id": "k7", "cat": "유제품", "nm": "연유", "base": "10ml · 20ml", "use": 2}, {"id": "k8", "cat": "가루 · 페이스트", "nm": "미숫가루", "base": "25g", "use": 1}, {"id": "k9", "cat": "가루 · 페이스트", "nm": "볶은 콩가루", "base": "5g", "use": 1}, {"id": "k10", "cat": "가루 · 페이스트", "nm": "말차 파우더", "base": "1g · 4g", "use": 1}, {"id": "k11", "cat": "가루 · 페이스트", "nm": "무가당 카카오 파우더", "base": "5g · 0.5g", "use": 2}, {"id": "k13", "cat": "가루 · 페이스트", "nm": "바닐라빈 페이스트", "base": "0.5g", "use": 1}, {"id": "k14", "cat": "초콜릿", "nm": "다크 커버추어 초콜릿", "base": "20g", "use": 1}, {"id": "k15", "cat": "초콜릿", "nm": "다크 초콜릿", "base": "30g", "use": 1}, {"id": "k16", "cat": "시럽 · 감미료", "nm": "바닐라 시럽", "base": "20~30ml", "use": 1}, {"id": "k17", "cat": "시럽 · 감미료", "nm": "알룰로스", "base": "7g", "use": 1}, {"id": "k18", "cat": "시럽 · 감미료", "nm": "설탕", "base": "8g", "use": 1}, {"id": "k19", "cat": "시럽 · 감미료", "nm": "꿀", "base": "적당량", "use": 1}, {"id": "k20", "cat": "시럽 · 감미료", "nm": "시럽", "base": "10ml", "use": 1}, {"id": "k21", "cat": "청 · 과육", "nm": "청귤청", "base": "45ml", "use": 1}, {"id": "k25", "cat": "청 · 과육", "nm": "레몬즙", "base": "5ml", "use": 1}, {"id": "k26", "cat": "생물 · 냉동", "nm": "생딸기", "base": "2알", "use": 1}, {"id": "k27", "cat": "생물 · 냉동", "nm": "냉동 블루베리", "base": "15알", "use": 1}, {"id": "k28", "cat": "생물 · 냉동", "nm": "사과 슬라이스", "base": "3장", "use": 1}, {"id": "k29", "cat": "생물 · 냉동", "nm": "청귤 슬라이스", "base": "1개", "use": 1}, {"id": "k31", "cat": "생물 · 냉동", "nm": "바나나", "base": "1개", "use": 1}, {"id": "k32", "cat": "생물 · 냉동", "nm": "아보카도", "base": "1/2개", "use": 1}, {"id": "k33", "cat": "생물 · 냉동", "nm": "인절미 떡 큐브", "base": "40g + 3개", "use": 1}, {"id": "k35", "cat": "생물 · 냉동", "nm": "무설탕 플레인 요거트", "base": "100g", "use": 1}, {"id": "k36", "cat": "허브 · 가니시", "nm": "애플민트", "base": "적당량", "use": 2}, {"id": "k37", "cat": "허브 · 가니시", "nm": "로즈마리", "base": "1줄기", "use": 1}, {"id": "k38", "cat": "허브 · 가니시", "nm": "식용 꽃", "base": "1~2송이", "use": 1}, {"id": "k39", "cat": "허브 · 가니시", "nm": "그래놀라 또는 카카오닙스", "base": "적당량", "use": 1}, {"id": "k40", "cat": "상시 비품", "nm": "얼음", "base": "120g", "use": 8}, {"id": "k41", "cat": "상시 비품", "nm": "물", "base": "약간 · 20ml", "use": 5}, {"id": "k42", "cat": "상시 비품", "nm": "탄산수", "base": "200ml", "use": 3}, {"id": "k43", "cat": "상시 비품", "nm": "소금", "base": "1자밤 · 한 꼬집", "use": 2}, {"id": "k44", "cat": "상시 비품", "nm": "바질씨드", "base": "2큰술", "use": 1}, {"id": "d_d1", "cat": "디저트 (완제품)", "nm": "휘낭시에", "base": "4,500원", "use": 0}, {"id": "d_d2", "cat": "디저트 (완제품)", "nm": "수제 화과자", "base": "5,000원", "use": 0}, {"id": "d_d3", "cat": "디저트 (완제품)", "nm": "허니 케이크", "base": "6,000원", "use": 0}, {"id": "d_d4", "cat": "디저트 (완제품)", "nm": "담은 약과", "base": "12,000원", "use": 0}, {"id": "d_d5", "cat": "디저트 (완제품)", "nm": "발효 약과", "base": "12,000원", "use": 0}], "note": ["레몬 슬라이스 — 잔당 2장(20g) × 에이드 6잔 = 120g/일", "바닐라 아이스크림 — 1스쿱 65ml 기준", "매일 우유 — 1L 6팩이 1묶음. 발주 36팩 = 6묶음, 최소 8팩 = 1묶음 + 2팩", "최소수량 = 일 소요량 × (소진 예상 − 재발주 시점). 이보다 적게 세면 「주문」이 뜹니다"]};
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')
                  +'-'+String(d.getDate()).padStart(2,'0');};
 let S;
@@ -739,14 +752,16 @@ function prog(k){
 /* S.min[id] = 최소수량 (기준, 계속 남음)
    S.unit[id] = 단위
    S.qty[날짜][id] = 그날 센 수량                          */
-function minOf(r){ const v=(S.min||{})[r.id]; return (v===undefined||v===null)?null:Number(v); }
+function minOf(r){ const v=(S.min||{})[r.id];
+  if(v!==undefined&&v!==null) return Number(v);
+  return (r.min===undefined||r.min===null)?null:Number(r.min); }
 function qtyOf(r,day){ const d=(S.qty||{})[day||S.day]; const v=d?d[r.id]:undefined;
   return (v===undefined||v===null)?null:Number(v); }
 function setQty(r,v){ S.qty=S.qty||{}; S.qty[S.day]=S.qty[S.day]||{};
   if(v===null) delete S.qty[S.day][r.id]; else S.qty[S.day][r.id]=v; }
 function yday(){ const d=new Date(new Date(S.day).getTime()-86400000);
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
-function unitOf(r){ return (S.unit||{})[r.id] || ''; }
+function unitOf(r){ const v=(S.unit||{})[r.id]; return (v!==undefined&&v!==null)?v:(r.unit||''); }
 
 /* 부족한 것 목록 */
 function shortList(){
@@ -786,7 +801,8 @@ function drawStock(){
     const nm=document.createElement('td'); nm.className='nm'; nm.textContent=r.nm;
     editable(nm,v=>{ const o=r.nm; r.nm=v||'(이름 없음)';
       if(o!==r.nm) note('편집','재고',o+' → '+r.nm); });
-    const bs=document.createElement('td'); bs.className='base'; bs.textContent=r.base;
+    const bs=document.createElement('td'); bs.className='base';
+    bs.textContent = r.base || (r.oq ? '발주 '+r.oq : '');
     const mn=document.createElement('td'); mn.className='r min';
     mn.innerHTML = m===null ? '<span style="opacity:.45">—</span>'
                             : '<b>'+m+'</b>'+(unitOf(r)?' '+esc(unitOf(r)):'');
@@ -887,18 +903,30 @@ $('#w-go').addEventListener('click',()=>{
 function drawBase(){
   const box=$('#l-base'); box.innerHTML='';
   const t=document.createElement('table'); t.className='stk';
-  t.innerHTML='<thead><tr><th>재료</th><th class="base">한 잔 기준</th>'+
+  t.innerHTML='<thead><tr><th>품목</th><th class="ref">발주량</th>'+
+    '<th class="ref">일 소요량</th><th class="ref r">소진 예상</th>'+
+    '<th class="ref r">재발주 시점</th><th class="ref">변동</th>'+
     '<th class="r">최소수량</th><th class="r">단위</th><th></th></tr></thead>';
   const tb=document.createElement('tbody'); let cat=null;
   S.stock.forEach((r,i)=>{
     if(r.cat!==cat){ cat=r.cat;
       const tr0=document.createElement('tr');
-      tr0.innerHTML='<td class="stkgrp" colspan="5">'+esc(cat)+'</td>'; tb.appendChild(tr0); }
+      tr0.innerHTML='<td class="stkgrp" colspan="9">'+esc(cat)+'</td>'; tb.appendChild(tr0); }
     const tr=document.createElement('tr');
     const nm=document.createElement('td'); nm.className='nm'; nm.textContent=r.nm;
     editable(nm,v=>{ const o=r.nm; r.nm=v||'(이름 없음)';
       if(o!==r.nm) note('편집','재고',o+' → '+r.nm); });
-    const bs=document.createElement('td'); bs.className='base'; bs.textContent=r.base;
+    const cell=(v,cls)=>{ const td=document.createElement('td'); td.className='ref '+(cls||'');
+      td.textContent=v||'—'; if(!v) td.style.opacity='.4';
+      editable(td,x=>{ const key=td.dataset.k; const o=r[key]||''; r[key]=(x==='—'?'':x);
+        if(o!==r[key]) note('기준',r.nm,key+' '+(o||'없음')+' → '+(r[key]||'없음')); });
+      return td; };
+    const c1=cell(r.oq); c1.dataset.k='oq';
+    const c2=cell(r.daily); c2.dataset.k='daily';
+    const c3=cell(r.life,'r'); c3.dataset.k='life';
+    const c4=cell(r.ro,'r'); c4.dataset.k='ro';
+    const c5=cell(r.chg); c5.dataset.k='chg';
+    if(r.chg) c5.classList.add(r.chg.indexOf('▲')>=0?'up':'down');
     const md=document.createElement('td'); md.className='r';
     const mi=document.createElement('input'); mi.className='q'; mi.type='number';
     mi.inputMode='decimal'; mi.placeholder='—';
@@ -925,15 +953,20 @@ function drawBase(){
     xb.addEventListener('click',()=>{ const o=r.nm; S.stock.splice(i,1); save(); drawBase(); drawStock();
       note('삭제','재고',o); });
     x.appendChild(xb);
-    tr.append(nm,bs,md,ud,x); tb.appendChild(tr);
+    tr.append(nm,c1,c2,c3,c4,c5,md,ud,x); tb.appendChild(tr);
   });
   t.appendChild(tb); box.appendChild(t);
   const add=document.createElement('div'); add.className='add';
-  const ab=document.createElement('button'); ab.type='button'; ab.textContent='+ 재료';
+  const ab=document.createElement('button'); ab.type='button'; ab.textContent='+ 품목';
   ab.addEventListener('click',()=>{ if(!needWho()) return;
-    S.stock.push({id:'x'+Date.now(),cat:'직접 넣은 것',nm:'새 재료',base:'',use:0});
-    save(); drawBase(); drawStock(); note('추가','재고','새 재료'); });
+    S.stock.push({id:'x'+Date.now(),cat:'직접 넣은 것',nm:'새 품목',base:'',use:0});
+    save(); drawBase(); drawStock(); note('추가','재고','새 품목'); });
   add.append(ab); box.appendChild(add);
+  if(DEF.note&&DEF.note.length){
+    const n=document.createElement('div'); n.className='memo';
+    n.innerHTML='<b>산출 근거</b>'+DEF.note.map(x=>'<div>· '+esc(x)+'</div>').join('');
+    box.appendChild(n);
+  }
   repaintBase();
 }
 function repaintBase(){
