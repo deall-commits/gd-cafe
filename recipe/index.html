@@ -414,7 +414,7 @@ body.edit .revert{display:inline-block}
   .panewrap{flex:0 0 auto!important}
   table.stk td.base,table.stk th.base{display:none}
   table.stk td.ref,table.stk th.ref{display:none}
-  table.stk td.ref[data-k="oq"],table.stk th.ref:first-of-type{display:table-cell}
+  table.stk td.ref1,table.stk th.ref1{display:table-cell}
   .panewrap.on .more{display:none}
   ol.st .rail{flex:0 0 40%}
 }
@@ -512,6 +512,26 @@ body.edit .revert{display:inline-block}
   .sum>.hd2 .cnt2{font-size:19px}
   .logtbl td{padding:9px 6px}
   .logtbl td.d,.logtbl td.w{font-size:16px}
+  /* 기준 탭은 폰에서 좁으니 참고 열을 다시 접는다 (아이패드 세로에서는 보관이 남는다) */
+  table.stk td.ref1,table.stk th.ref1{display:none}
+  /* 기록 — 날짜·사람 고르개가 화면을 다 먹지 않게 묶는다 */
+  .pick{max-height:23vh;overflow-y:auto;padding-bottom:8px}
+  /* 요약 카드 머리글이 ▼ 를 잘라내지 않게 줄바꿈을 허용한다 */
+  .sum>.hd2{flex-wrap:wrap}
+  .sum>.hd2 .rt{margin-left:auto;flex:0 0 auto}
+  .sum .mini{max-width:none;flex:1 1 100%;order:9;margin-top:4px}
+  /* 품목 상세 — 닫기가 스크롤 밖으로 사라지지 않게 위에 고정한다 */
+  .sheet .top2{position:sticky;top:0;z-index:1;background:var(--paper);
+       margin:0 0 14px;padding:2px 0 12px}
+  .cutwrap table{width:100%}
+  .cutwrap td{font-size:15px}
+  .cutwrap td.n2{width:auto}
+  /* 노치·홈바를 피한다 (viewport-fit=cover 를 쓰고 있었는데 여백이 없었다) */
+  .tabs,.chips,.hintbar{padding-left:max(12px,env(safe-area-inset-left));
+       padding-right:max(12px,env(safe-area-inset-right))}
+  main{padding-left:max(13px,env(safe-area-inset-left));
+       padding-right:max(13px,env(safe-area-inset-right));
+       padding-bottom:max(10px,env(safe-area-inset-bottom))}
 
   /* 이름 물어보기 · 품목 상세 */
   .gate{padding:18px}
@@ -1109,7 +1129,7 @@ $('#w-go').addEventListener('click',()=>{
 function drawBase(){
   const box=$('#l-base'); box.innerHTML='';
   const t=document.createElement('table'); t.className='stk';
-  t.innerHTML='<thead><tr><th>품목</th><th class="ref">보관</th>'+
+  t.innerHTML='<thead><tr><th>품목</th><th class="ref ref1">보관</th>'+
     '<th class="ref">구매 주기</th><th class="ref">소분</th>'+
     '<th class="ref">개봉 후 · 주의</th>'+
     '<th class="ref">일 소요량</th><th class="ref r">소진</th>'+
@@ -1131,7 +1151,7 @@ function drawBase(){
       editable(td,x=>{ const key=td.dataset.k; const o=r[key]||''; r[key]=(x==='—'?'':x);
         if(o!==r[key]) note('기준',r.nm,key+' '+(o||'없음')+' → '+(r[key]||'없음')); });
       return td; };
-    const zt=document.createElement('td'); zt.className='ref';
+    const zt=document.createElement('td'); zt.className='ref ref1';
     if(r.zone){ const sp=document.createElement('span'); sp.className='zone z'+r.zone;
       sp.textContent=(DEF.zone&&DEF.zone[r.zone])||r.zone; zt.appendChild(sp);
       if(r.oq){ const q=document.createElement('div'); q.className='buy'; q.textContent=r.oq;
@@ -1317,7 +1337,8 @@ function drawPick(){
     wbox.appendChild(b); };
   mk('전체','');
   names.forEach(n=>mk(n,n));
-  if(!names.length) wbox.innerHTML+='<span class="lb2" style="min-width:0">아직 없습니다</span>';
+  if(!names.length) wbox.insertAdjacentHTML('beforeend',
+    '<span class="lb2" style="min-width:0">아직 없습니다</span>');
 }
 
 /* 그날 기록을 묶음별로 정리한다 */
@@ -1521,7 +1542,7 @@ function closeSheet(){ $('#sheet').classList.remove('on'); }
 $('#sheet').addEventListener('click',e=>{ if(e.target.id==='sheet') closeSheet(); });
 addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
 
-chips(); paint();
+chips(); paint(); setView(view);
 try{ const v=localStorage.getItem('gd.view'); if(v&&v!=='rx'&&WHO&&PIN) setView(v); }catch(e){}
 
 </script>
