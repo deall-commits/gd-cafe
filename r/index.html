@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, follow">
+<title>GD카페 예약</title>
+<!-- 명함 QR 전용 단축 경로.
+     QR 페이로드를 42바이트로 줄이기 위한 것 — /reserve/ 를 직접 넣으면
+     QR 버전이 4에서 5로 올라가 모듈이 0.45mm 아래로 내려간다.
+     쿼리스트링(?c=쿠폰코드 등)은 그대로 넘긴다. -->
+<link rel="canonical" href="../reserve/">
+<meta http-equiv="refresh" content="0; url=../reserve/">
+<style>
+  body { margin:0; min-height:100vh; display:grid; place-items:center;
+         background:#0b0908; color:#b3a48a;
+         font-family:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif; }
+  a { color:#c6a15b; }
+</style>
+</head>
+<body>
+  <p>예약 페이지로 이동합니다 — <a href="../reserve/">눌러서 계속</a></p>
+  <script>location.replace("../reserve/" + location.search + location.hash);</script>
+</body>
+</html>
