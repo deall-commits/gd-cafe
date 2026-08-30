@@ -106,8 +106,8 @@ body.mono .lock .ch { content: none; }
 
 /* 감성 문구 — 이 인쇄물에서 가장 큰 덩어리는 숫자가 아니라 문장이다 */
 .say { flex: none; font-family: var(--serif-ko); line-height: 1.42; letter-spacing: -.01em; }
-.say .l1 { display: block; font-size: 7.6pt; }
-.say .l2 { display: block; font-size: 7.6pt; }
+.say .l1 { display: block; font-size: 9pt; }
+.say .l2 { display: block; font-size: 9pt; }
 .say em { font-style: normal; font-family: var(--serif); letter-spacing: .03em; }
 
 /* 주소 · 예약 · 전화주문 — 쿠폰과 명함이 공유하는 마지막 블록 */
@@ -603,7 +603,7 @@ function couponHTML(i) {
     <span class="k-off"><span class="num">${rate}</span><span class="pct">%</span></span>
     <span class="k-say2">
       <b>음료 1잔 ${rate === 50 ? "반값" : rate + "% 할인"}</b>
-      <span>낮에는 통창의 빛, 저녁이면 샹들리에</span>
+      <span>통창의 빛과 샹들리에</span>
     </span>
     <span class="k-seal">
       <svg viewBox="0 0 207.4 207.4" aria-hidden="true"><use href="#gd-seal"/></svg>
@@ -642,9 +642,9 @@ function cardHTML() {
     </div>
   </div>
   <div style="flex:1"></div>
-  <p class="say" style="margin:0 0 1.6mm">
-    <span class="l1">낮에는 통창으로 빛이 들고, 저녁이면 샹들리에가 켜집니다.</span>
-    <span class="l2">온전한 당신의 하루를 위한 2층, <em>A Good Day</em>.</span>
+  <p class="say" style="margin:0 0 .9mm">
+    <span class="l1">통창의 빛과 샹들리에.</span>
+    <span class="l2">온전한 당신의 하루를 위한 2층, <em>A Good Day</em></span>
   </p>
   ${addrLine(true)}
 </article>`;
