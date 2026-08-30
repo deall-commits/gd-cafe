@@ -86,24 +86,26 @@ body { margin: 0; background: #100d0b; color: var(--ink); font-family: var(--san
 
 /* ============================================================
    카드 공통 — 90 × 50 mm, 사방 5mm 정숙 영역, 테두리 없음
+   메인 로고는 사이트의 3단 샹들리에 크레스트. 크게 쓴다.
    ============================================================ */
-.card { position: relative; width: 90mm; height: 50mm; padding: 5mm; overflow: hidden;
-        display: flex; flex-direction: column; color: var(--p-ink);
-        --crest-fill: var(--p-ink); --crest-line: var(--p-ink); --crest-flame: var(--p-ink); }
-.med { width: 9mm; height: 9mm; flex: none; }
-.c-head { display: flex; align-items: center; gap: 2.4mm; height: 9mm; flex: none; }
-.wordmark { line-height: 1.06; }
+.card {
+  position: relative; width: 90mm; height: 50mm; padding: 5mm; overflow: hidden;
+  display: flex; flex-direction: column; color: var(--p-ink);
+  --crest-fill: var(--p-ink); --crest-line: var(--p-ink); --crest-flame: var(--p-ink);
+}
+/* 크레스트 10mm 폭 → 13.4mm 높이 (viewBox 289.4 × 388.9). 실선폭 0.121mm 를 피하려고
+   10mm 에서는 stroke-width 를 CSS 로 한 번 더 올린다. */
+.crest { width: 10mm; height: 13.44mm; flex: none; }
+.crest .cl { stroke-width: 4.4; }
+.c-head { display: flex; align-items: flex-start; gap: 2.8mm; height: 13.44mm; flex: none; }
+.wordmark { padding-top: 1.6mm; line-height: 1.08; }
 .wordmark b { display: block; font-family: var(--serif); font-size: 12.5pt; font-weight: 700; letter-spacing: .04em; }
-.wordmark span { display: block; font-size: 4.8pt; letter-spacing: .2em; margin-top: .7mm; }
-/* 샹들리에 스웨그 — 이 집의 서명. 양옆 헤어라인이 축을 만든다. */
-.swagwrap { display: flex; align-items: center; gap: 2.6mm; height: 4.4mm; flex: none; }
-.swagwrap .ln { flex: 1; height: 0; border-top: .25mm solid var(--p-ink); }
-.swag { display: block; width: 23mm; height: 4.31mm; flex: none; }
+.wordmark span { display: block; font-size: 4.8pt; letter-spacing: .19em; margin-top: .8mm; }
 .hair { height: 0; border-top: .25mm solid var(--p-ink); flex: none; }
 
 /* ---------- 쿠폰 ---------- */
-.k-no { margin-left: auto; text-align: right; flex: none; }
-.k-no .n { font-family: var(--serif); font-size: 8pt; letter-spacing: .08em; display: block; }
+.k-no { margin-left: auto; text-align: right; flex: none; padding-top: 1.4mm; }
+.k-no .n { font-family: var(--serif); font-size: 8pt; letter-spacing: .05em; display: block; }
 .k-no .issue { font-size: 5.5pt; display: block; margin-top: 1.2mm; letter-spacing: .02em; }
 .k-no .issue u { text-decoration: none; border-bottom: .2mm solid var(--p-ink); padding: 0 1.8mm; }
 
@@ -114,12 +116,12 @@ body { margin: 0; background: #100d0b; color: var(--ink); font-family: var(--san
 .k-say { display: flex; flex-direction: column; gap: 1.1mm; }
 .k-say b { font-size: 11.5pt; font-weight: 700; letter-spacing: -.015em; white-space: nowrap; }
 .k-say span { font-size: 6pt; letter-spacing: .01em; }
-.k-seal { margin-left: auto; flex: none; width: 14mm; text-align: center; }
-.k-seal svg { display: block; width: 14mm; height: 14mm; color: var(--p-ink); }
-.k-seal em { font-style: normal; font-size: 5.5pt; letter-spacing: .1em; display: block; margin-top: -2.6mm; }
+.k-seal { margin-left: auto; flex: none; width: 11.5mm; text-align: center; }
+.k-seal svg { display: block; width: 11.5mm; height: 11.5mm; color: var(--p-ink); }
+.k-seal em { font-style: normal; font-size: 5.5pt; letter-spacing: .1em; display: block; margin-top: -2.4mm; }
 
-.k-foot { display: flex; align-items: flex-end; gap: 3mm; padding-top: 1.2mm; flex: none; }
-.k-terms { margin: 0; padding: 0; list-style: none; font-size: 5.5pt; line-height: 1.45; letter-spacing: .01em; }
+.k-foot { display: flex; align-items: flex-end; gap: 3mm; padding-top: .9mm; flex: none; }
+.k-terms { margin: 0; padding: 0; list-style: none; font-size: 5.5pt; line-height: 1.38; letter-spacing: .01em; }
 .k-terms li { white-space: nowrap; }
 .k-terms li::before { content: "◆ "; font-size: 3.6pt; vertical-align: .35mm; }
 .k-meta { margin-left: auto; text-align: right; flex: none; white-space: nowrap; }
@@ -128,16 +130,22 @@ body { margin: 0; background: #100d0b; color: var(--ink); font-family: var(--san
 .k-code { display: block; margin-top: .9mm; font-size: 6pt; letter-spacing: .02em; }
 .k-code b { font-family: var(--serif); font-size: 8.5pt; font-weight: 700; letter-spacing: .12em; }
 
+/* 주소 · 예약 · 전화주문 — 쿠폰과 명함이 공유하는 마지막 줄 */
+.addr { flex: none; font-size: 5.5pt; line-height: 1.4; letter-spacing: .01em; margin-top: .8mm; }
+.addr b { font-weight: 600; }
+.addr .sep { padding: 0 .8mm; }
+
 /* ---------- 명함 ---------- */
 .b-body { display: flex; gap: 3.4mm; flex: 1; padding-top: 1mm; }
 .b-left { display: flex; flex-direction: column; flex: 1; min-width: 0; }
-.b-tag { font-family: var(--serif-ko); font-size: 9.5pt; line-height: 1.42; letter-spacing: -.01em; margin: 0; }
-.b-info { margin-top: auto; font-size: 5.5pt; line-height: 1.62; letter-spacing: .02em; }
+.b-tag { font-family: var(--serif-ko); font-size: 8.5pt; line-height: 1.44; letter-spacing: -.01em; margin: 0 0 .6mm; }
+.b-tag em { font-style: normal; font-family: var(--serif); letter-spacing: .02em; }
+.b-info { margin-top: auto; font-size: 5.5pt; line-height: 1.36; letter-spacing: .02em; }
 .b-info b { font-weight: 600; }
-.b-qr { flex: none; width: 20.2mm; text-align: center; }
-.b-qr svg { display: block; width: 20.2mm; height: 20.2mm; }
-.b-qr .ko { display: block; font-size: 5.8pt; font-weight: 600; line-height: 1.15; margin-top: .7mm; letter-spacing: -.01em; }
-.b-qr .en { display: block; font-size: 4.6pt; line-height: 1.15; letter-spacing: .1em; margin-top: .4mm; white-space: nowrap; }
+.b-qr { flex: none; width: 19.4mm; text-align: center; }
+.b-qr svg { display: block; width: 19.4mm; height: 19.4mm; }
+.b-qr .ko { display: block; white-space: nowrap; font-size: 5.8pt; font-weight: 600; line-height: 1.15; margin-top: .5mm; letter-spacing: -.01em; }
+.b-qr .en { display: block; font-size: 4.6pt; line-height: 1.15; letter-spacing: .1em; margin-top: .3mm; white-space: nowrap; }
 
 /* ---------- 인쇄 ---------- */
 @page { size: A4 portrait; margin: 0; }
@@ -157,10 +165,9 @@ body { margin: 0; background: #100d0b; color: var(--ink); font-family: var(--san
 
 <!-- 브랜드 심볼 — 스웨그는 index.html 캔버스 샹들리에와 같은 지오메트리에서 뽑았다 -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-<symbol id="gd-swag" viewBox="-8 44 816 153" preserveAspectRatio="none"><g fill="var(--crest-fill,#0b0908)" stroke="none"><ellipse cx="0" cy="90" rx="6" ry="8"/><ellipse cx="800" cy="90" rx="6" ry="8"/><path d="M80 123.4L91 139.9L80 156.4L69 139.9Z"/><path d="M160 138.6L171 155.1L160 171.6L149 155.1Z"/><path d="M240 151.8L251 168.3L240 184.8L229 168.3Z"/><path d="M320 139L331 155.5L320 172L309 155.5Z"/><path d="M400 148L411 164.5L400 181L389 164.5Z"/><path d="M480 155L491 171.5L480 188L469 171.5Z"/><path d="M560 135.8L571 152.3L560 168.8L549 152.3Z"/><path d="M640 138.6L651 155.1L640 171.6L629 155.1Z"/><path d="M720 139.4L731 155.9L720 172.4L709 155.9Z"/><rect x="75.5" y="73.4" width="9" height="26"/><rect x="235.5" y="85.8" width="9" height="26"/><rect x="395.5" y="90" width="9" height="26"/><rect x="555.5" y="85.8" width="9" height="26"/><rect x="715.5" y="73.4" width="9" height="26"/></g><g fill="none" stroke="var(--crest-line,#c6a15b)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M0 90Q400 142 800 90"/><ellipse cx="0" cy="90" rx="6" ry="8"/><ellipse cx="800" cy="90" rx="6" ry="8"/><path d="M80 99.4L80 123.4"/><path d="M80 123.4L91 139.9L80 156.4L69 139.9Z"/><path d="M160 106.6L160 138.6"/><path d="M160 138.6L171 155.1L160 171.6L149 155.1Z"/><path d="M240 111.8L240 151.8"/><path d="M240 151.8L251 168.3L240 184.8L229 168.3Z"/><path d="M320 115L320 139"/><path d="M320 139L331 155.5L320 172L309 155.5Z"/><path d="M400 116L400 148"/><path d="M400 148L411 164.5L400 181L389 164.5Z"/><path d="M480 115L480 155"/><path d="M480 155L491 171.5L480 188L469 171.5Z"/><path d="M560 111.8L560 135.8"/><path d="M560 135.8L571 152.3L560 168.8L549 152.3Z"/><path d="M640 106.6L640 138.6"/><path d="M640 138.6L651 155.1L640 171.6L629 155.1Z"/><path d="M720 99.4L720 139.4"/><path d="M720 139.4L731 155.9L720 172.4L709 155.9Z"/><rect x="75.5" y="73.4" width="9" height="26"/><rect x="235.5" y="85.8" width="9" height="26"/><rect x="395.5" y="90" width="9" height="26"/><rect x="555.5" y="85.8" width="9" height="26"/><rect x="715.5" y="73.4" width="9" height="26"/></g><g fill="var(--crest-flame,#c6a15b)" stroke="none"><ellipse cx="80" cy="62.4" rx="5" ry="11"/><ellipse cx="240" cy="74.8" rx="5" ry="11"/><ellipse cx="400" cy="79" rx="5" ry="11"/><ellipse cx="560" cy="74.8" rx="5" ry="11"/><ellipse cx="720" cy="62.4" rx="5" ry="11"/></g></symbol>
+<symbol id="gd-crest" viewBox="-144.7 56 289.4 388.9"><g fill="var(--crest-fill,#0b0908)" stroke="none"><ellipse cx="0" cy="72" rx="3" ry="4.2"/><ellipse cx="0" cy="87" rx="3" ry="4.2"/><ellipse cx="0" cy="102" rx="3" ry="4.2"/><ellipse cx="0" cy="117" rx="3" ry="4.2"/><ellipse cx="0" cy="134" rx="6" ry="9"/><ellipse cx="0" cy="152" rx="9" ry="7"/><ellipse cx="0" cy="212.8" rx="7" ry="11"/><ellipse cx="0" cy="302.4" rx="8" ry="12"/><ellipse cx="0" cy="361.2" rx="10" ry="8"/><ellipse cx="-54.6" cy="176.64" rx="1.9" ry="2.5"/><path d="M-54.6 180.68L-45.4 194.48L-54.6 209.2L-63.8 194.48Z"/><ellipse cx="-27.3" cy="193.38" rx="1.9" ry="2.5"/><path d="M-27.3 200.66L-18.1 214.46L-27.3 229.18L-36.5 214.46Z"/><ellipse cx="0" cy="201.12" rx="1.9" ry="2.5"/><path d="M0 211.64L9.2 225.44L0 240.16L-9.2 225.44Z"/><ellipse cx="27.3" cy="190.14" rx="1.9" ry="2.5"/><path d="M27.3 194.18L36.5 207.98L27.3 222.7L18.1 207.98Z"/><ellipse cx="54.6" cy="179.88" rx="1.9" ry="2.5"/><path d="M54.6 187.16L63.8 200.96L54.6 215.68L45.4 200.96Z"/><ellipse cx="-50.23" cy="165.76" rx="4.5" ry="2.2"/><rect x="-52.03" y="154.76" width="3.6" height="10"/><ellipse cx="-16.74" cy="179.31" rx="4.5" ry="2.2"/><rect x="-18.54" y="168.31" width="3.6" height="10"/><ellipse cx="16.74" cy="179.31" rx="4.5" ry="2.2"/><rect x="14.94" y="168.31" width="3.6" height="10"/><ellipse cx="50.23" cy="165.76" rx="4.5" ry="2.2"/><rect x="48.43" y="154.76" width="3.6" height="10"/><ellipse cx="-91" cy="266.24" rx="1.9" ry="2.5"/><path d="M-91 270.28L-81.8 284.08L-91 298.8L-100.2 284.08Z"/><ellipse cx="-60.67" cy="279.48" rx="1.9" ry="2.5"/><path d="M-60.67 286.76L-51.47 300.56L-60.67 315.28L-69.87 300.56Z"/><ellipse cx="-30.33" cy="288.72" rx="1.9" ry="2.5"/><path d="M-30.33 299.24L-21.13 313.04L-30.33 327.76L-39.53 313.04Z"/><ellipse cx="0" cy="284.24" rx="1.9" ry="2.5"/><path d="M0 288.28L9.2 302.08L0 316.8L-9.2 302.08Z"/><ellipse cx="30.33" cy="285.48" rx="1.9" ry="2.5"/><path d="M30.33 292.76L39.53 306.56L30.33 321.28L21.13 306.56Z"/><ellipse cx="60.67" cy="282.72" rx="1.9" ry="2.5"/><path d="M60.67 293.24L69.87 307.04L60.67 321.76L51.47 307.04Z"/><ellipse cx="91" cy="266.24" rx="1.9" ry="2.5"/><path d="M91 270.28L100.2 284.08L91 298.8L81.8 284.08Z"/><ellipse cx="-83.72" cy="255.36" rx="4.5" ry="2.2"/><rect x="-85.52" y="244.36" width="3.6" height="10"/><ellipse cx="-41.86" cy="266.79" rx="4.5" ry="2.2"/><rect x="-43.66" y="255.79" width="3.6" height="10"/><ellipse cx="0" cy="270.6" rx="4.5" ry="2.2"/><rect x="-1.8" y="259.6" width="3.6" height="10"/><ellipse cx="41.86" cy="266.79" rx="4.5" ry="2.2"/><rect x="40.06" y="255.79" width="3.6" height="10"/><ellipse cx="83.72" cy="255.36" rx="4.5" ry="2.2"/><rect x="81.92" y="244.36" width="3.6" height="10"/><ellipse cx="-130" cy="355.84" rx="1.9" ry="2.5"/><path d="M-130 359.88L-120.8 373.68L-130 388.4L-139.2 373.68Z"/><ellipse cx="-97.5" cy="366.96" rx="1.9" ry="2.5"/><path d="M-97.5 374.23L-88.3 388.04L-97.5 402.76L-106.7 388.04Z"/><ellipse cx="-65" cy="375.82" rx="1.9" ry="2.5"/><path d="M-65 386.34L-55.8 400.14L-65 414.86L-74.2 400.14Z"/><ellipse cx="-32.5" cy="372.72" rx="1.9" ry="2.5"/><path d="M-32.5 376.76L-23.3 390.56L-32.5 405.28L-41.7 390.56Z"/><ellipse cx="0" cy="377.08" rx="1.9" ry="2.5"/><path d="M0 384.36L9.2 398.16L0 412.88L-9.2 398.16Z"/><ellipse cx="32.5" cy="379.2" rx="1.9" ry="2.5"/><path d="M32.5 389.72L41.7 403.52L32.5 418.24L23.3 403.52Z"/><ellipse cx="65" cy="369.34" rx="1.9" ry="2.5"/><path d="M65 373.38L74.2 387.18L65 401.9L55.8 387.18Z"/><ellipse cx="97.5" cy="366.96" rx="1.9" ry="2.5"/><path d="M97.5 374.23L106.7 388.04L97.5 402.76L88.3 388.04Z"/><ellipse cx="130" cy="362.32" rx="1.9" ry="2.5"/><path d="M130 372.84L139.2 386.64L130 401.36L120.8 386.64Z"/><ellipse cx="-119.6" cy="344.96" rx="4.5" ry="2.2"/><rect x="-121.4" y="333.96" width="3.6" height="10"/><ellipse cx="-71.76" cy="354.72" rx="4.5" ry="2.2"/><rect x="-73.56" y="343.72" width="3.6" height="10"/><ellipse cx="-23.92" cy="359.59" rx="4.5" ry="2.2"/><rect x="-25.72" y="348.59" width="3.6" height="10"/><ellipse cx="23.92" cy="359.59" rx="4.5" ry="2.2"/><rect x="22.12" y="348.59" width="3.6" height="10"/><ellipse cx="71.76" cy="354.72" rx="4.5" ry="2.2"/><rect x="69.96" y="343.72" width="3.6" height="10"/><ellipse cx="119.6" cy="344.96" rx="4.5" ry="2.2"/><rect x="117.8" y="333.96" width="3.6" height="10"/><ellipse cx="0" cy="387.2" rx="3.4" ry="4"/><path d="M0 383.6L18 410.6L0 439.4L-18 410.6Z"/></g><g fill="none" stroke="var(--crest-line,#c6a15b)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M0 64L0 122"/><path d="M-3 72A3 4.2 0 0 1 3 72"/><path d="M-3 87A3 4.2 0 0 1 3 87"/><path d="M-3 102A3 4.2 0 0 1 3 102"/><path d="M-3 117A3 4.2 0 0 1 3 117"/><path d="M0 124L0 373.2"/><path d="M-6 134A6 9 0 0 1 6 134"/><path d="M-9 152A9 7 0 0 1 9 152"/><path d="M-7 212.8A7 11 0 0 1 7 212.8"/><path d="M-8 302.4A8 12 0 0 1 8 302.4"/><path d="M-10 361.2A10 8 0 0 1 10 361.2"/><path d="M0 142L-54.6 168M0 142L54.6 168"/><path class="arc" d="M-54.6 168Q0 192 54.6 168"/><path d="M-54.6 171L-54.6 185.28"/><path d="M-56.5 176.64A1.9 2.5 0 0 1 -52.7 176.64"/><path d="M-54.6 180.68L-45.4 194.48L-54.6 209.2L-63.8 194.48Z"/><path d="M-54.6 180.68L-54.6 209.2"/><path d="M-27.3 184.5L-27.3 205.26"/><path d="M-29.2 193.38A1.9 2.5 0 0 1 -25.4 193.38"/><path d="M-27.3 200.66L-18.1 214.46L-27.3 229.18L-36.5 214.46Z"/><path d="M-27.3 200.66L-27.3 229.18"/><path d="M0 189L0 216.24"/><path d="M-1.9 201.12A1.9 2.5 0 0 1 1.9 201.12"/><path d="M0 211.64L9.2 225.44L0 240.16L-9.2 225.44Z"/><path d="M0 211.64L0 240.16"/><path d="M27.3 184.5L27.3 198.78"/><path d="M25.4 190.14A1.9 2.5 0 0 1 29.2 190.14"/><path d="M27.3 194.18L36.5 207.98L27.3 222.7L18.1 207.98Z"/><path d="M27.3 194.18L27.3 222.7"/><path d="M54.6 171L54.6 191.76"/><path d="M52.7 179.88A1.9 2.5 0 0 1 56.5 179.88"/><path d="M54.6 187.16L63.8 200.96L54.6 215.68L45.4 200.96Z"/><path d="M54.6 187.16L54.6 215.68"/><path d="M-54.73 165.76A4.5 2.2 0 0 1 -45.73 165.76"/><rect x="-52.03" y="154.76" width="3.6" height="10"/><path d="M-21.24 179.31A4.5 2.2 0 0 1 -12.24 179.31"/><rect x="-18.54" y="168.31" width="3.6" height="10"/><path d="M12.24 179.31A4.5 2.2 0 0 1 21.24 179.31"/><rect x="14.94" y="168.31" width="3.6" height="10"/><path d="M45.73 165.76A4.5 2.2 0 0 1 54.73 165.76"/><rect x="48.43" y="154.76" width="3.6" height="10"/><path d="M0 231.6L-91 257.6M0 231.6L91 257.6"/><path class="arc" d="M-91 257.6Q0 281.6 91 257.6"/><path d="M-91 260.6L-91 274.88"/><path d="M-92.9 266.24A1.9 2.5 0 0 1 -89.1 266.24"/><path d="M-91 270.28L-81.8 284.08L-91 298.8L-100.2 284.08Z"/><path d="M-91 270.28L-91 298.8"/><path d="M-60.67 270.6L-60.67 291.36"/><path d="M-62.57 279.48A1.9 2.5 0 0 1 -58.77 279.48"/><path d="M-60.67 286.76L-51.47 300.56L-60.67 315.28L-69.87 300.56Z"/><path d="M-60.67 286.76L-60.67 315.28"/><path d="M-30.33 276.6L-30.33 303.84"/><path d="M-32.23 288.72A1.9 2.5 0 0 1 -28.43 288.72"/><path d="M-30.33 299.24L-21.13 313.04L-30.33 327.76L-39.53 313.04Z"/><path d="M-30.33 299.24L-30.33 327.76"/><path d="M0 278.6L0 292.88"/><path d="M-1.9 284.24A1.9 2.5 0 0 1 1.9 284.24"/><path d="M0 288.28L9.2 302.08L0 316.8L-9.2 302.08Z"/><path d="M0 288.28L0 316.8"/><path d="M30.33 276.6L30.33 297.36"/><path d="M28.43 285.48A1.9 2.5 0 0 1 32.23 285.48"/><path d="M30.33 292.76L39.53 306.56L30.33 321.28L21.13 306.56Z"/><path d="M30.33 292.76L30.33 321.28"/><path d="M60.67 270.6L60.67 297.84"/><path d="M58.77 282.72A1.9 2.5 0 0 1 62.57 282.72"/><path d="M60.67 293.24L69.87 307.04L60.67 321.76L51.47 307.04Z"/><path d="M60.67 293.24L60.67 321.76"/><path d="M91 260.6L91 274.88"/><path d="M89.1 266.24A1.9 2.5 0 0 1 92.9 266.24"/><path d="M91 270.28L100.2 284.08L91 298.8L81.8 284.08Z"/><path d="M91 270.28L91 298.8"/><path d="M-88.22 255.36A4.5 2.2 0 0 1 -79.22 255.36"/><rect x="-85.52" y="244.36" width="3.6" height="10"/><path d="M-46.36 266.79A4.5 2.2 0 0 1 -37.36 266.79"/><rect x="-43.66" y="255.79" width="3.6" height="10"/><path d="M-4.5 270.6A4.5 2.2 0 0 1 4.5 270.6"/><rect x="-1.8" y="259.6" width="3.6" height="10"/><path d="M37.36 266.79A4.5 2.2 0 0 1 46.36 266.79"/><rect x="40.06" y="255.79" width="3.6" height="10"/><path d="M79.22 255.36A4.5 2.2 0 0 1 88.22 255.36"/><rect x="81.92" y="244.36" width="3.6" height="10"/><path d="M0 321.2L-130 347.2M0 321.2L130 347.2"/><path class="arc" d="M-130 347.2Q0 371.2 130 347.2"/><path d="M-130 350.2L-130 364.48"/><path d="M-131.9 355.84A1.9 2.5 0 0 1 -128.1 355.84"/><path d="M-130 359.88L-120.8 373.68L-130 388.4L-139.2 373.68Z"/><path d="M-130 359.88L-130 388.4"/><path d="M-97.5 358.08L-97.5 378.84"/><path d="M-99.4 366.96A1.9 2.5 0 0 1 -95.6 366.96"/><path d="M-97.5 374.23L-88.3 388.04L-97.5 402.76L-106.7 388.04Z"/><path d="M-97.5 374.23L-97.5 402.76"/><path d="M-65 363.7L-65 390.94"/><path d="M-66.9 375.82A1.9 2.5 0 0 1 -63.1 375.82"/><path d="M-65 386.34L-55.8 400.14L-65 414.86L-74.2 400.14Z"/><path d="M-65 386.34L-65 414.86"/><path d="M-32.5 367.08L-32.5 381.36"/><path d="M-34.4 372.72A1.9 2.5 0 0 1 -30.6 372.72"/><path d="M-32.5 376.76L-23.3 390.56L-32.5 405.28L-41.7 390.56Z"/><path d="M-32.5 376.76L-32.5 405.28"/><path d="M0 368.2L0 388.96"/><path d="M-1.9 377.08A1.9 2.5 0 0 1 1.9 377.08"/><path d="M0 384.36L9.2 398.16L0 412.88L-9.2 398.16Z"/><path d="M0 384.36L0 412.88"/><path d="M32.5 367.08L32.5 394.32"/><path d="M30.6 379.2A1.9 2.5 0 0 1 34.4 379.2"/><path d="M32.5 389.72L41.7 403.52L32.5 418.24L23.3 403.52Z"/><path d="M32.5 389.72L32.5 418.24"/><path d="M65 363.7L65 377.98"/><path d="M63.1 369.34A1.9 2.5 0 0 1 66.9 369.34"/><path d="M65 373.38L74.2 387.18L65 401.9L55.8 387.18Z"/><path d="M65 373.38L65 401.9"/><path d="M97.5 358.08L97.5 378.84"/><path d="M95.6 366.96A1.9 2.5 0 0 1 99.4 366.96"/><path d="M97.5 374.23L106.7 388.04L97.5 402.76L88.3 388.04Z"/><path d="M97.5 374.23L97.5 402.76"/><path d="M130 350.2L130 377.44"/><path d="M128.1 362.32A1.9 2.5 0 0 1 131.9 362.32"/><path d="M130 372.84L139.2 386.64L130 401.36L120.8 386.64Z"/><path d="M130 372.84L130 401.36"/><path d="M-124.1 344.96A4.5 2.2 0 0 1 -115.1 344.96"/><rect x="-121.4" y="333.96" width="3.6" height="10"/><path d="M-76.26 354.72A4.5 2.2 0 0 1 -67.26 354.72"/><rect x="-73.56" y="343.72" width="3.6" height="10"/><path d="M-28.42 359.59A4.5 2.2 0 0 1 -19.42 359.59"/><rect x="-25.72" y="348.59" width="3.6" height="10"/><path d="M19.42 359.59A4.5 2.2 0 0 1 28.42 359.59"/><rect x="22.12" y="348.59" width="3.6" height="10"/><path d="M67.26 354.72A4.5 2.2 0 0 1 76.26 354.72"/><rect x="69.96" y="343.72" width="3.6" height="10"/><path d="M115.1 344.96A4.5 2.2 0 0 1 124.1 344.96"/><rect x="117.8" y="333.96" width="3.6" height="10"/><path d="M0 373.2L0 389.2"/><path d="M-3.4 387.2A3.4 4 0 0 1 3.4 387.2"/><path d="M0 383.6L18 410.6L0 439.4L-18 410.6Z"/><path d="M0 383.6L0 439.4"/></g><g fill="var(--crest-flame,#e9d3a0)" stroke="none"><ellipse cx="-50.23" cy="149.76" rx="1.9" ry="4.6"/><ellipse cx="-16.74" cy="163.31" rx="1.9" ry="4.6"/><ellipse cx="16.74" cy="163.31" rx="1.9" ry="4.6"/><ellipse cx="50.23" cy="149.76" rx="1.9" ry="4.6"/><ellipse cx="-83.72" cy="239.36" rx="1.9" ry="4.6"/><ellipse cx="-41.86" cy="250.79" rx="1.9" ry="4.6"/><ellipse cx="0" cy="254.6" rx="1.9" ry="4.6"/><ellipse cx="41.86" cy="250.79" rx="1.9" ry="4.6"/><ellipse cx="83.72" cy="239.36" rx="1.9" ry="4.6"/><ellipse cx="-119.6" cy="328.96" rx="1.9" ry="4.6"/><ellipse cx="-71.76" cy="338.72" rx="1.9" ry="4.6"/><ellipse cx="-23.92" cy="343.59" rx="1.9" ry="4.6"/><ellipse cx="23.92" cy="343.59" rx="1.9" ry="4.6"/><ellipse cx="71.76" cy="338.72" rx="1.9" ry="4.6"/><ellipse cx="119.6" cy="328.96" rx="1.9" ry="4.6"/></g></symbol>
 <symbol id="gd-seal" viewBox="-103.7 -103.7 207.4 207.4"><path d="M15 -60.7A62.5 62.5 0 1 1 -15 -60.7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="0" cy="0" r="53.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M0 -100.4L12 -82.4L0 -63.2L-12 -82.4Z" fill="currentColor"/></symbol>
 <symbol id="gd-ruler" viewBox="-6 0 412 50.3"><path d="M0 34Q200 50.7 400 34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M-8 34L8 34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="-2.5" y="20" width="5" height="14" fill="currentColor"/><path d="M0 10L3 15L0 20L-3 15Z" fill="currentColor"/><path d="M32 37L48 37" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="37.5" y="23" width="5" height="14" fill="currentColor"/><path d="M40 13L43 18L40 23L37 18Z" fill="currentColor"/><path d="M72 39.3L88 39.3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="77.5" y="25.3" width="5" height="14" fill="currentColor"/><path d="M80 15.3L83 20.3L80 25.3L77 20.3Z" fill="currentColor"/><path d="M112 41L128 41" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="117.5" y="27" width="5" height="14" fill="currentColor"/><path d="M120 17L123 22L120 27L117 22Z" fill="currentColor"/><path d="M152 42L168 42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="157.5" y="28" width="5" height="14" fill="currentColor"/><path d="M160 18L163 23L160 28L157 23Z" fill="currentColor"/><path d="M192 42.3L208 42.3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="197.5" y="28.3" width="5" height="14" fill="currentColor"/><path d="M200 18.3L203 23.3L200 28.3L197 23.3Z" fill="currentColor"/><path d="M232 42L248 42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="237.5" y="28" width="5" height="14" fill="currentColor"/><path d="M240 18L243 23L240 28L237 23Z" fill="currentColor"/><path d="M272 41L288 41" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="277.5" y="27" width="5" height="14" fill="currentColor"/><path d="M280 17L283 22L280 27L277 22Z" fill="currentColor"/><path d="M312 39.3L328 39.3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="317.5" y="25.3" width="5" height="14" fill="currentColor"/><path d="M320 15.3L323 20.3L320 25.3L317 20.3Z" fill="currentColor"/><path d="M352 37L368 37" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="357.5" y="23" width="5" height="14" fill="currentColor"/><path d="M360 13L363 18L360 23L357 18Z" fill="currentColor"/><path d="M392 34L408 34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="397.5" y="20" width="5" height="14" fill="currentColor"/><path d="M400 10L403 15L400 20L397 15Z" fill="currentColor"/></symbol>
-<symbol id="gd-med" viewBox="0 0 100 100"><circle cx="50" cy="50" r="47" fill="none" stroke="var(--p-ink,#14100e)" stroke-width="3.6"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="Bodoni MT,Didot,Playfair Display,Georgia,serif" font-weight="700" font-size="40" letter-spacing="1" fill="var(--p-ink,#14100e)">GD</text></symbol>
 </svg>
 
 <header class="bar no-print">
@@ -181,7 +188,16 @@ body { margin: 0; background: #100d0b; color: var(--ink); font-family: var(--san
       <input id="i-qty" type="number" min="1" max="500" step="10" value="10" inputmode="numeric"></div>
     <div class="f"><label for="i-start">시작 번호</label>
       <input id="i-start" type="number" min="1" step="1" value="1" inputmode="numeric"></div>
-    <div class="f"><label for="i-url">예약 URL (QR)</label>
+    <div class="f">
+      <label>명함 QR</label>
+      <span class="seg" id="i-qrt">
+        <button data-q="kakao" class="on">카카오채널</button>
+        <button data-q="reserve">예약 페이지</button>
+      </span>
+    </div>
+    <div class="f"><label for="i-kakao">카카오채널 URL</label>
+      <input id="i-kakao" class="wide" type="url" spellcheck="false" placeholder="http://pf.kakao.com/_xxxxxx"></div>
+    <div class="f"><label for="i-url">예약 URL</label>
       <input id="i-url" class="wide" type="url" spellcheck="false"></div>
     <div class="f"><label for="i-insta">인스타 아이디</label>
       <input id="i-insta" type="text" placeholder="gdcafe.cheongdam" spellcheck="false"></div>
@@ -460,6 +476,8 @@ const CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // 혼동 문자(I,L,O,0,1) 제
 const ST = {
   kind: "mix", rate: 50, exp: "", qty: 10, start: 1,
   reserveUrl: "https://deall-commits.github.io/gd-cafe/r/",
+  kakaoUrl: "",          // 예: http://pf.kakao.com/_xxxxxx
+  qrTarget: "kakao",     // kakao | reserve — 카카오 채널이 비어 있으면 자동으로 예약 페이지
   insta: "", tel: "", codes: [],
 };
 
@@ -512,7 +530,7 @@ function qrSVG(text) {
     svg = `<svg viewBox="0 0 ${side} ${side}" shape-rendering="crispEdges" role="img" aria-label="예약 QR 코드">` +
           `<rect width="${side}" height="${side}" fill="#fff"/>` +
           `<path d="${d}" fill="var(--p-ink,#14100e)"/></svg>`;
-    info = { ok: true, version: q.version, modules: n, side, mm: 20.2 / side };
+    info = { ok: true, version: q.version, modules: n, side, mm: 19.4 / side };
   } catch (e) {
     svg = `<svg viewBox="0 0 10 10" role="img" aria-label="QR 생성 실패"><rect width="10" height="10" fill="#fff" ` +
           `stroke="var(--p-ink,#14100e)" stroke-width=".2"/></svg>`;
@@ -526,15 +544,21 @@ function qrSVG(text) {
 /* ============================================================
    카드
    ============================================================ */
+/* 주소 · 예약 · 전화주문 — 쿠폰과 명함이 공유한다 */
+function addrLine() {
+  const order = ST.tel
+    ? `예약 · 전화주문 <b>${esc(ST.tel)}</b>`
+    : `예약 · 전화주문 가능`;
+  return `<div class="addr">서울 강남구 삼성로 716 (청담동) 2층<span class="sep">·</span>${order}</div>`;
+}
+
 function head(right) {
   return `<div class="c-head">
-    <svg class="med" viewBox="0 0 100 100" role="img" aria-label="GD카페"><use href="#gd-med"/></svg>
-    <span class="wordmark"><b>GD카페</b><span>CHEONGDAM · SEOUL</span></span>
+    <svg class="crest" viewBox="0 0 289.4 388.9" role="img" aria-label="GD카페 검은 샹들리에"><use href="#gd-crest"/></svg>
+    <span class="wordmark"><b>GD카페</b><span>A GOOD DAY · CHEONGDAM SEOUL</span></span>
     ${right || ""}
   </div>
-  <div class="swagwrap"><i class="ln"></i>
-    <svg class="swag" viewBox="0 0 816 153" aria-hidden="true"><use href="#gd-swag"/></svg>
-    <i class="ln"></i></div>`;
+  <div class="hair" style="margin-top:.8mm"></div>`;
 }
 
 function couponHTML(i) {
@@ -545,7 +569,7 @@ function couponHTML(i) {
     <span class="k-off"><span class="num">${rate}</span><span class="pct">%</span></span>
     <span class="k-say">
       <b>음료 1잔 ${rate === 50 ? "반값" : rate + "% 할인"}</b>
-      <span>검은 샹들리에 아래에서</span>
+      <span>통창의 빛과 샹들리에</span>
     </span>
     <span class="k-seal">
       <svg viewBox="0 0 207.4 207.4" aria-hidden="true"><use href="#gd-seal"/></svg>
@@ -564,30 +588,34 @@ function couponHTML(i) {
       <span class="k-code">대조 <b>${esc(code)}</b></span>
     </span>
   </div>
+  ${addrLine()}
 </article>`;
 }
 
 function cardHTML() {
-  const lines = [
+  const kakao = ST.qrTarget === "kakao" && ST.kakaoUrl;
+  const url = kakao ? ST.kakaoUrl : ST.reserveUrl;
+  const cap = kakao
+    ? { ko: "카카오톡 채널", en: "KAKAO CHANNEL" }
+    : { ko: "자리를 남겨두세요", en: "SCAN TO RESERVE" };
+  const order = ST.tel ? `예약 · 전화주문 <b>${esc(ST.tel)}</b>` : `예약 · 전화주문 가능`;
+  const info = [
     `<b>서울 강남구 삼성로 716 (청담동) 2층</b>`,
     `매일 11:00 – 22:00 · 라스트오더 21:30`,
-    `예약은 <b>회신을 받으신 뒤 확정</b>됩니다`,
+    order,
+    `예약은 회신을 받으신 뒤 확정됩니다`,
   ];
-  const contact = [];
-  if (ST.insta) contact.push(`인스타그램 @${esc(ST.insta.replace(/^@/, ""))}`);
-  if (ST.tel) contact.push(esc(ST.tel));
-  if (contact.length) lines.push(contact.join(" · "));
   return `<article class="card namecard">
   ${head("")}
   <div class="b-body">
     <div class="b-left">
-      <p class="b-tag">검은 샹들리에 아래,<br>오늘의 나를 다시 만나는 곳</p>
-      <div class="b-info">${lines.join("<br>")}</div>
+      <p class="b-tag">통창의 빛과 샹들리에.<br>온전한 당신의 하루를 위한 2층,<br><em>A Good Day</em></p>
+      <div class="b-info">${info.join("<br>")}</div>
     </div>
     <div class="b-qr">
-      ${qrSVG(ST.reserveUrl)}
-      <span class="ko">자리를 남겨두세요</span>
-      <span class="en">SCAN TO RESERVE</span>
+      ${qrSVG(url)}
+      <span class="ko">${cap.ko}</span>
+      <span class="en">${cap.en}</span>
     </div>
   </div>
 </article>`;
@@ -646,7 +674,7 @@ function checkQuietZone() {
       for (const r of range.getClientRects()) test(r);
     }
     // 도형(svg·룰)은 요소 박스로 잰다
-    card.querySelectorAll("svg, .hair, .swagwrap .ln, .k-no .issue u").forEach(el => {
+    card.querySelectorAll("svg, .hair, .k-no .issue u").forEach(el => {
       if (el.getClientRects().length) test(el.getBoundingClientRect());
     });
     if (worst > TOL) bad.push({ i: i + 1, mm: worst, side, kind: card.classList.contains("coupon") ? "쿠폰" : "명함" });
@@ -685,7 +713,7 @@ function render() {
   let qrNote = "";
   if (cards > 0 && q) {
     qrNote = q.ok
-      ? ` QR은 버전 ${q.version}(${q.modules}모듈) · 20.2mm 배치에서 모듈 ${q.mm.toFixed(3)}mm` +
+      ? ` QR은 버전 ${q.version}(${q.modules}모듈) · 19.4mm 배치에서 모듈 ${q.mm.toFixed(3)}mm` +
         (q.mm < 0.45 ? ` <span class="bad">— 0.45mm 미만이라 가정용 인쇄에서 위험합니다. 예약 URL을 줄이세요.</span>`
                      : ` <span class="warn">— 안전 범위</span>`)
       : ` <span class="bad">QR 생성 실패 — 예약 URL이 너무 깁니다.</span>`;
@@ -726,6 +754,13 @@ $("i-exp").addEventListener("input", e => { ST.exp = e.target.value; render(); }
 $("i-qty").addEventListener("input", e => { ST.qty = num(e.target.value, 1, 500, 10); syncCodes(); render(); });
 $("i-start").addEventListener("input", e => { ST.start = num(e.target.value, 1, 999999, 1); render(); });
 $("i-url").addEventListener("input", e => { ST.reserveUrl = e.target.value.trim(); render(); });
+$("i-kakao").addEventListener("input", e => { ST.kakaoUrl = e.target.value.trim(); render(); });
+$("i-qrt").addEventListener("click", e => {
+  const b = e.target.closest("button[data-q]"); if (!b) return;
+  ST.qrTarget = b.dataset.q;
+  [...e.currentTarget.querySelectorAll("button")].forEach(x => x.classList.toggle("on", x === b));
+  render();
+});
 $("i-insta").addEventListener("input", e => { ST.insta = e.target.value.trim(); render(); });
 $("i-tel").addEventListener("input", e => { ST.tel = e.target.value.trim(); render(); });
 $("b-recode").addEventListener("click", () => { ST.codes = makeCodes(ST.qty); render(); });

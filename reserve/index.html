@@ -40,6 +40,8 @@ body { margin: 0; background: var(--noir); color: var(--ink); font-family: var(-
 
 h1 { font-family: var(--serif); font-size: 27px; letter-spacing: .01em; margin: 0 0 10px; }
 .lead { color: var(--ink-2); margin: 0 0 14px; }
+.lead b { color: var(--ink); font-weight: 600; }
+.lead em { font-style: normal; font-family: var(--serif); color: var(--gold-soft); letter-spacing: .02em; }
 .notice { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
           padding: 11px 13px; font-size: 14px; color: var(--ink-2); margin: 0 0 22px; }
 .notice b { color: var(--gold-soft); font-weight: 600; }
@@ -101,7 +103,8 @@ pre { background: var(--panel-2); border: 1px solid var(--line); border-radius: 
   </div>
 
   <h1>자리를 남겨두세요</h1>
-  <p class="lead">검은 샹들리에 아래, 원하시는 시간을 알려주시면 매장에서 확인 후 회신드립니다.</p>
+  <p class="lead"><b>통창의 빛과 샹들리에.</b><br>온전한 당신의 하루를 위한 2층, <em>A Good Day</em>.<br>
+  원하시는 시간을 알려주시면 매장에서 확인 후 회신드립니다.</p>
   <p class="notice"><b>예약은 매장 회신을 받으신 뒤 확정</b>됩니다. 아래 내용을 보내주시면 순서대로 확인합니다.</p>
 
   <form id="f" novalidate>
@@ -126,7 +129,9 @@ pre { background: var(--panel-2); border: 1px solid var(--line); border-radius: 
     <pre id="msg"></pre>
     <div class="acts">
       <button class="btn gold" id="b-copy">내용 복사</button>
+      <a class="btn ghost" id="b-kakao" hidden>카카오톡 채널</a>
       <a class="btn ghost" id="b-sms" hidden>문자로 보내기</a>
+      <a class="btn ghost" id="b-tel" hidden>전화 걸기</a>
       <a class="btn ghost" id="b-insta" hidden>인스타그램 DM</a>
     </div>
     <p class="tip" id="tip"></p>
@@ -137,6 +142,7 @@ pre { background: var(--panel-2); border: 1px solid var(--line); border-radius: 
   <section class="info">
     <div><h3>ADDRESS</h3><p>서울특별시 강남구 삼성로 716 (청담동) 2층</p></div>
     <div><h3>HOURS</h3><p>매일 11:00 – 22:00 · 라스트오더 21:30</p></div>
+    <div><h3>ORDER</h3><p>예약 · 전화주문 모두 가능합니다</p></div>
   </section>
 </main>
 
@@ -147,7 +153,8 @@ pre { background: var(--panel-2); border: 1px solid var(--line); border-radius: 
    비워두면 「내용 복사」만 노출된다 (동작에는 문제 없다).
    ============================================================ */
 const STORE = {
-  tel: "",        // 예: "02-000-0000"  → 「문자로 보내기」 활성화
+  tel: "",        // 예: "02-3446-7160"  → 「전화 걸기」·「문자로 보내기」 활성화
+  kakao: "",      // 예: "http://pf.kakao.com/_xxxxxx" → 「카카오톡 채널」 활성화 (명함 QR과 같은 주소)
   instagram: "",  // 예: "gdcafe.cheongdam" → 「인스타그램 DM」 활성화
 };
 
@@ -208,15 +215,19 @@ $("b-make").addEventListener("click", () => {
     a.href = `sms:${STORE.tel.replace(/[^0-9+]/g, "")}${/iPhone|iPad|Macintosh/.test(navigator.userAgent) ? "&" : "?"}body=${encodeURIComponent(text)}`;
     a.hidden = false;
   }
+  if (STORE.kakao) { const a = $("b-kakao"); a.href = STORE.kakao; a.hidden = false; }
+  if (STORE.tel) { const a = $("b-tel"); a.href = `tel:${STORE.tel.replace(/[^0-9+]/g, "")}`; a.hidden = false; }
   if (STORE.instagram) {
     const a = $("b-insta");
     a.href = `https://www.instagram.com/${STORE.instagram.replace(/^@/, "")}/`;
     a.hidden = false;
   }
   $("tip").className = "tip";
-  $("tip").innerHTML = STORE.instagram || STORE.tel
-    ? "버튼을 누르면 내용이 채워진 채로 열립니다. 보내주시면 매장에서 회신드립니다."
-    : "내용을 복사한 뒤 <b>인스타그램에서 GD카페를 찾아 DM</b>으로 붙여넣어 주세요. 확인 후 회신드립니다.";
+  $("tip").innerHTML = STORE.kakao
+    ? "<b>카카오톡 채널</b>을 열고 복사한 내용을 붙여넣어 보내주세요. 확인 후 회신드립니다. 전화 주문도 받습니다."
+    : (STORE.instagram || STORE.tel)
+      ? "버튼을 누르면 내용이 채워진 채로 열립니다. 보내주시면 매장에서 회신드립니다."
+      : "내용을 복사한 뒤 <b>카카오톡 채널이나 인스타그램 DM</b>으로 붙여넣어 주세요. 확인 후 회신드립니다.";
   $("out").scrollIntoView({ behavior: "smooth", block: "nearest" });
 });
 
