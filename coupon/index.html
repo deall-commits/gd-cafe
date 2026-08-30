@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>GD카페 인쇄 시트 — 50% 쿠폰 · 예약 명함</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0908'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23e9d3a0'%3EGD%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   GD카페 인쇄 시트 — 50% 할인 쿠폰 · 예약 명함
+   90 × 50 mm (한국 표준 명함) · 2열 5행 = A4 한 장에 10면
+   거터 0 맞물림 재단 · 판면 180×250mm 를 A4 정중앙에 · 재단선 9줄
+
+   인쇄면 규칙 (가정용 레이저/잉크젯 기준)
+   ① 잉크는 전부 100% 먹. 골드는 화면 전용이다 —
+      0.18mm 골드 헤어라인은 하프톤으로 분해되어 점선으로 부서진다.
+      위계는 농도가 아니라 크기와 굵기로만 만든다.
+   ② 검은 풀블리드를 쓰지 않는다. 「배경 그래픽 끄기」로 뽑아도 살아남는다.
+   ③ 카드 둘레에 점선을 두르지 않는다 — 점선 테두리는 할인권의 1번 신호이고,
+      손재단 0.5mm 오차를 그대로 고발한다. 재단 표시는 전부 여백의 틱으로.
+   ④ 그린 선 최소 0.15mm · 한글 최소 5.5pt.
+   ============================================================ */
+:root {
+  --noir: #0b0908; --panel: #151110; --line: #2e2721;
+  --gold: #c6a15b; --gold-soft: #e9d3a0;
+  --ink: #f1e9d8; --ink-2: #b3a48a; --ink-3: #7f725d;
+  --serif: "Bodoni MT", "Didot", "Playfair Display", Georgia, serif;
+  --serif-ko: "Bodoni MT", "Didot", "Nanum Myeongjo", "Noto Serif KR",
+              "Apple SD Gothic Neo", Batang, serif;
+  --sans: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo",
+          "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --p-ink: #14100e;               /* 인쇄면 유일한 색 */
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #100d0b; color: var(--ink); font-family: var(--sans); font-size: 15px;
+       -webkit-font-smoothing: antialiased; }
+
+/* ---------- 조작판 ---------- */
+.bar { position: sticky; top: 0; z-index: 30; background: rgba(11,9,8,.94); backdrop-filter: blur(10px);
+       border-bottom: 1px solid var(--line); padding: 12px 18px 14px; }
+.bar-in { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 13px 16px; align-items: flex-end; }
+.brand { font-family: var(--serif); font-size: 21px; letter-spacing: .06em; color: var(--gold-soft); }
+.brand small { display: block; font-family: var(--sans); font-size: 10.5px; letter-spacing: .18em; color: var(--ink-3); }
+.f { display: flex; flex-direction: column; gap: 5px; }
+.f > label { font-size: 11px; letter-spacing: .1em; color: var(--ink-3); text-transform: uppercase; }
+.f input { font-family: var(--sans); font-size: 14.5px; background: var(--panel); border: 1px solid var(--line);
+           color: var(--ink); border-radius: 8px; padding: 8px 10px; min-width: 88px; }
+.f input.wide { min-width: 230px; }
+.f input:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.seg { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { font-family: var(--sans); font-size: 13.5px; cursor: pointer; background: var(--panel); border: 0;
+              color: var(--ink-2); padding: 9px 12px; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button.on { background: var(--gold); color: #17120b; font-weight: 700; }
+.btn { font-family: var(--sans); font-size: 14.5px; font-weight: 700; cursor: pointer; border-radius: 8px;
+       padding: 10px 18px; border: 1px solid transparent; }
+.btn.gold { background: var(--gold); color: #17120b; }
+.btn.ghost { background: transparent; border-color: var(--line); color: var(--ink-2); }
+.hint { max-width: 1180px; margin: 10px auto 0; font-size: 12.8px; color: var(--ink-3); line-height: 1.7; }
+.hint b { color: var(--ink-2); font-weight: 600; }
+.hint .warn { color: var(--gold); }
+.hint .bad { color: #d98a72; }
+.stage { padding: 22px 18px 70px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+
+/* ============================================================
+   A4 시트
+   ============================================================ */
+.sheet { width: 210mm; height: 296.8mm; padding: 23.4mm 15mm; background: #fff; color: var(--p-ink);
+         position: relative; overflow: hidden; break-after: page; page-break-after: always; }
+.sheet:last-of-type { break-after: auto; page-break-after: auto; }
+.grid { display: grid; grid-template-columns: repeat(2, 90mm); grid-template-rows: repeat(5, 50mm); }
+
+/* 재단 틱 — 판면에서 1mm 띄운 여백에만. 길이 5mm · 굵기 0.2mm · 끝에 크리스탈 드롭 */
+.tick { position: absolute; background: var(--p-ink); }
+.tick.v { width: .2mm; height: 5mm; }
+.tick.h { height: .2mm; width: 5mm; }
+
+/* 검침자 — 인쇄 배율 검증. 자로 재서 40.0mm 면 배율 100%. 재단되어 버려지는 여백에 산다. */
+.sheet-foot { position: absolute; left: 15mm; right: 15mm; bottom: 11.5mm; display: flex;
+              align-items: flex-end; justify-content: space-between; gap: 6mm; font-size: 6pt;
+              letter-spacing: .02em; line-height: 1.4; }
+.gauge { text-align: center; flex: none; width: 40mm; }
+.gauge svg { display: block; width: 40mm; height: 4.9mm; color: var(--p-ink); }
+.gauge b { font-size: 6.5pt; font-weight: 600; }
+
+/* ============================================================
+   카드 공통 — 90 × 50 mm, 사방 5mm 정숙 영역, 테두리 없음
+   ============================================================ */
+.card { position: relative; width: 90mm; height: 50mm; padding: 5mm; overflow: hidden;
+        display: flex; flex-direction: column; color: var(--p-ink);
+        --crest-fill: var(--p-ink); --crest-line: var(--p-ink); --crest-flame: var(--p-ink); }
+.med { width: 9mm; height: 9mm; flex: none; }
+.c-head { display: flex; align-items: center; gap: 2.4mm; height: 9mm; flex: none; }
+.wordmark { line-height: 1.06; }
+.wordmark b { display: block; font-family: var(--serif); font-size: 12.5pt; font-weight: 700; letter-spacing: .04em; }
+.wordmark span { display: block; font-size: 4.8pt; letter-spacing: .2em; margin-top: .7mm; }
+/* 샹들리에 스웨그 — 이 집의 서명. 양옆 헤어라인이 축을 만든다. */
+.swagwrap { display: flex; align-items: center; gap: 2.6mm; height: 4.4mm; flex: none; }
+.swagwrap .ln { flex: 1; height: 0; border-top: .25mm solid var(--p-ink); }
+.swag { display: block; width: 23mm; height: 4.31mm; flex: none; }
+.hair { height: 0; border-top: .25mm solid var(--p-ink); flex: none; }
+
+/* ---------- 쿠폰 ---------- */
+.k-no { margin-left: auto; text-align: right; flex: none; }
+.k-no .n { font-family: var(--serif); font-size: 8pt; letter-spacing: .08em; display: block; }
+.k-no .issue { font-size: 5.5pt; display: block; margin-top: 1.2mm; letter-spacing: .02em; }
+.k-no .issue u { text-decoration: none; border-bottom: .2mm solid var(--p-ink); padding: 0 1.8mm; }
+
+.k-hero { display: flex; align-items: center; gap: 3.4mm; flex: 1; }
+.k-off { font-family: var(--serif); line-height: .78; display: flex; align-items: baseline; flex: none; }
+.k-off .num { font-size: 26pt; font-weight: 700; letter-spacing: -.03em; }
+.k-off .pct { font-size: 13pt; font-weight: 700; margin-left: .3mm; }
+.k-say { display: flex; flex-direction: column; gap: 1.1mm; }
+.k-say b { font-size: 11.5pt; font-weight: 700; letter-spacing: -.015em; white-space: nowrap; }
+.k-say span { font-size: 6pt; letter-spacing: .01em; }
+.k-seal { margin-left: auto; flex: none; width: 14mm; text-align: center; }
+.k-seal svg { display: block; width: 14mm; height: 14mm; color: var(--p-ink); }
+.k-seal em { font-style: normal; font-size: 5.5pt; letter-spacing: .1em; display: block; margin-top: -2.6mm; }
+
+.k-foot { display: flex; align-items: flex-end; gap: 3mm; padding-top: 1.2mm; flex: none; }
+.k-terms { margin: 0; padding: 0; list-style: none; font-size: 5.5pt; line-height: 1.45; letter-spacing: .01em; }
+.k-terms li { white-space: nowrap; }
+.k-terms li::before { content: "◆ "; font-size: 3.6pt; vertical-align: .35mm; }
+.k-meta { margin-left: auto; text-align: right; flex: none; white-space: nowrap; }
+.k-exp { font-size: 6pt; display: block; }
+.k-exp b { font-family: var(--serif); font-size: 8pt; letter-spacing: .08em; }
+.k-code { display: block; margin-top: .9mm; font-size: 6pt; letter-spacing: .02em; }
+.k-code b { font-family: var(--serif); font-size: 8.5pt; font-weight: 700; letter-spacing: .12em; }
+
+/* ---------- 명함 ---------- */
+.b-body { display: flex; gap: 3.4mm; flex: 1; padding-top: 1mm; }
+.b-left { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.b-tag { font-family: var(--serif-ko); font-size: 9.5pt; line-height: 1.42; letter-spacing: -.01em; margin: 0; }
+.b-info { margin-top: auto; font-size: 5.5pt; line-height: 1.62; letter-spacing: .02em; }
+.b-info b { font-weight: 600; }
+.b-qr { flex: none; width: 20.2mm; text-align: center; }
+.b-qr svg { display: block; width: 20.2mm; height: 20.2mm; }
+.b-qr .ko { display: block; font-size: 5.8pt; font-weight: 600; line-height: 1.15; margin-top: .7mm; letter-spacing: -.01em; }
+.b-qr .en { display: block; font-size: 4.6pt; line-height: 1.15; letter-spacing: .1em; margin-top: .4mm; white-space: nowrap; }
+
+/* ---------- 인쇄 ---------- */
+@page { size: A4 portrait; margin: 0; }
+@media print {
+  html, body { background: #fff; margin: 0; padding: 0; }
+  .no-print { display: none !important; }
+  .stage { padding: 0; gap: 0; display: block; }
+  .sheet { box-shadow: none; margin: 0; }
+  .sheet, .card { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}
+@media screen { .sheet { box-shadow: 0 18px 60px rgba(0,0,0,.55); } }
+@media (max-width: 940px) { .stage { align-items: flex-start; overflow-x: auto; } }
+
+</style>
+</head>
+<body>
+
+<!-- 브랜드 심볼 — 스웨그는 index.html 캔버스 샹들리에와 같은 지오메트리에서 뽑았다 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<symbol id="gd-swag" viewBox="-8 44 816 153" preserveAspectRatio="none"><g fill="var(--crest-fill,#0b0908)" stroke="none"><ellipse cx="0" cy="90" rx="6" ry="8"/><ellipse cx="800" cy="90" rx="6" ry="8"/><path d="M80 123.4L91 139.9L80 156.4L69 139.9Z"/><path d="M160 138.6L171 155.1L160 171.6L149 155.1Z"/><path d="M240 151.8L251 168.3L240 184.8L229 168.3Z"/><path d="M320 139L331 155.5L320 172L309 155.5Z"/><path d="M400 148L411 164.5L400 181L389 164.5Z"/><path d="M480 155L491 171.5L480 188L469 171.5Z"/><path d="M560 135.8L571 152.3L560 168.8L549 152.3Z"/><path d="M640 138.6L651 155.1L640 171.6L629 155.1Z"/><path d="M720 139.4L731 155.9L720 172.4L709 155.9Z"/><rect x="75.5" y="73.4" width="9" height="26"/><rect x="235.5" y="85.8" width="9" height="26"/><rect x="395.5" y="90" width="9" height="26"/><rect x="555.5" y="85.8" width="9" height="26"/><rect x="715.5" y="73.4" width="9" height="26"/></g><g fill="none" stroke="var(--crest-line,#c6a15b)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M0 90Q400 142 800 90"/><ellipse cx="0" cy="90" rx="6" ry="8"/><ellipse cx="800" cy="90" rx="6" ry="8"/><path d="M80 99.4L80 123.4"/><path d="M80 123.4L91 139.9L80 156.4L69 139.9Z"/><path d="M160 106.6L160 138.6"/><path d="M160 138.6L171 155.1L160 171.6L149 155.1Z"/><path d="M240 111.8L240 151.8"/><path d="M240 151.8L251 168.3L240 184.8L229 168.3Z"/><path d="M320 115L320 139"/><path d="M320 139L331 155.5L320 172L309 155.5Z"/><path d="M400 116L400 148"/><path d="M400 148L411 164.5L400 181L389 164.5Z"/><path d="M480 115L480 155"/><path d="M480 155L491 171.5L480 188L469 171.5Z"/><path d="M560 111.8L560 135.8"/><path d="M560 135.8L571 152.3L560 168.8L549 152.3Z"/><path d="M640 106.6L640 138.6"/><path d="M640 138.6L651 155.1L640 171.6L629 155.1Z"/><path d="M720 99.4L720 139.4"/><path d="M720 139.4L731 155.9L720 172.4L709 155.9Z"/><rect x="75.5" y="73.4" width="9" height="26"/><rect x="235.5" y="85.8" width="9" height="26"/><rect x="395.5" y="90" width="9" height="26"/><rect x="555.5" y="85.8" width="9" height="26"/><rect x="715.5" y="73.4" width="9" height="26"/></g><g fill="var(--crest-flame,#c6a15b)" stroke="none"><ellipse cx="80" cy="62.4" rx="5" ry="11"/><ellipse cx="240" cy="74.8" rx="5" ry="11"/><ellipse cx="400" cy="79" rx="5" ry="11"/><ellipse cx="560" cy="74.8" rx="5" ry="11"/><ellipse cx="720" cy="62.4" rx="5" ry="11"/></g></symbol>
+<symbol id="gd-seal" viewBox="-103.7 -103.7 207.4 207.4"><path d="M15 -60.7A62.5 62.5 0 1 1 -15 -60.7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="0" cy="0" r="53.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M0 -100.4L12 -82.4L0 -63.2L-12 -82.4Z" fill="currentColor"/></symbol>
+<symbol id="gd-ruler" viewBox="-6 0 412 50.3"><path d="M0 34Q200 50.7 400 34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M-8 34L8 34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="-2.5" y="20" width="5" height="14" fill="currentColor"/><path d="M0 10L3 15L0 20L-3 15Z" fill="currentColor"/><path d="M32 37L48 37" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="37.5" y="23" width="5" height="14" fill="currentColor"/><path d="M40 13L43 18L40 23L37 18Z" fill="currentColor"/><path d="M72 39.3L88 39.3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="77.5" y="25.3" width="5" height="14" fill="currentColor"/><path d="M80 15.3L83 20.3L80 25.3L77 20.3Z" fill="currentColor"/><path d="M112 41L128 41" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="117.5" y="27" width="5" height="14" fill="currentColor"/><path d="M120 17L123 22L120 27L117 22Z" fill="currentColor"/><path d="M152 42L168 42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="157.5" y="28" width="5" height="14" fill="currentColor"/><path d="M160 18L163 23L160 28L157 23Z" fill="currentColor"/><path d="M192 42.3L208 42.3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="197.5" y="28.3" width="5" height="14" fill="currentColor"/><path d="M200 18.3L203 23.3L200 28.3L197 23.3Z" fill="currentColor"/><path d="M232 42L248 42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="237.5" y="28" width="5" height="14" fill="currentColor"/><path d="M240 18L243 23L240 28L237 23Z" fill="currentColor"/><path d="M272 41L288 41" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="277.5" y="27" width="5" height="14" fill="currentColor"/><path d="M280 17L283 22L280 27L277 22Z" fill="currentColor"/><path d="M312 39.3L328 39.3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="317.5" y="25.3" width="5" height="14" fill="currentColor"/><path d="M320 15.3L323 20.3L320 25.3L317 20.3Z" fill="currentColor"/><path d="M352 37L368 37" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="357.5" y="23" width="5" height="14" fill="currentColor"/><path d="M360 13L363 18L360 23L357 18Z" fill="currentColor"/><path d="M392 34L408 34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="397.5" y="20" width="5" height="14" fill="currentColor"/><path d="M400 10L403 15L400 20L397 15Z" fill="currentColor"/></symbol>
+<symbol id="gd-med" viewBox="0 0 100 100"><circle cx="50" cy="50" r="47" fill="none" stroke="var(--p-ink,#14100e)" stroke-width="3.6"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="Bodoni MT,Didot,Playfair Display,Georgia,serif" font-weight="700" font-size="40" letter-spacing="1" fill="var(--p-ink,#14100e)">GD</text></symbol>
+</svg>
+
+<header class="bar no-print">
+  <div class="bar-in">
+    <div class="brand">GD카페<small>PRINT SHEET</small></div>
+    <div class="f">
+      <label>시트 구성</label>
+      <span class="seg" id="i-kind">
+        <button data-k="mix" class="on">쿠폰+명함</button>
+        <button data-k="coupon">쿠폰만</button>
+        <button data-k="card">명함만</button>
+      </span>
+    </div>
+    <div class="f"><label for="i-rate">할인율</label>
+      <input id="i-rate" type="number" min="1" max="100" step="5" value="50" inputmode="numeric"></div>
+    <div class="f"><label for="i-exp">유효기간</label><input id="i-exp" type="date"></div>
+    <div class="f"><label for="i-qty">면 수</label>
+      <input id="i-qty" type="number" min="1" max="500" step="10" value="10" inputmode="numeric"></div>
+    <div class="f"><label for="i-start">시작 번호</label>
+      <input id="i-start" type="number" min="1" step="1" value="1" inputmode="numeric"></div>
+    <div class="f"><label for="i-url">예약 URL (QR)</label>
+      <input id="i-url" class="wide" type="url" spellcheck="false"></div>
+    <div class="f"><label for="i-insta">인스타 아이디</label>
+      <input id="i-insta" type="text" placeholder="gdcafe.cheongdam" spellcheck="false"></div>
+    <div class="f"><label for="i-tel">전화</label><input id="i-tel" type="tel" placeholder="02-000-0000"></div>
+    <button class="btn ghost" id="b-recode">번호 새로 발급</button>
+    <button class="btn gold" id="b-print">인쇄</button>
+  </div>
+  <p class="hint" id="hint"></p>
+</header>
+
+<main class="stage" id="stage"></main>
+
+<script>
+/* ============================================================
+   QR 코드 인코더 (byte 모드 · 버전 1–10 · L/M/Q/H)
+   외부 라이브러리 없이 매장 PC 오프라인에서 동작해야 하므로 직접 구현.
+   ============================================================ */
+const QR = (() => {
+  // (버전, 레벨) → [블록당 EC 코드워드, 그룹1 블록수, 그룹1 데이터, 그룹2 블록수, 그룹2 데이터]
+  const RS = {
+    L: [[7,1,19,0,0],[10,1,34,0,0],[15,1,55,0,0],[20,1,80,0,0],[26,1,108,0,0],
+        [18,2,68,0,0],[20,2,78,0,0],[24,2,97,0,0],[30,2,116,0,0],[18,2,68,2,69]],
+    M: [[10,1,16,0,0],[16,1,28,0,0],[26,1,44,0,0],[18,2,32,0,0],[24,2,43,0,0],
+        [16,4,27,0,0],[18,4,31,0,0],[22,2,38,2,39],[22,3,36,2,37],[26,4,43,1,44]],
+    Q: [[13,1,13,0,0],[22,1,22,0,0],[18,2,17,0,0],[26,2,24,0,0],[18,2,15,2,16],
+        [24,4,19,0,0],[18,2,14,4,15],[22,4,18,2,19],[20,4,16,4,17],[24,6,19,2,20]],
+    H: [[17,1,9,0,0],[28,1,16,0,0],[22,2,13,0,0],[16,4,9,0,0],[22,2,11,2,12],
+        [28,4,15,0,0],[26,4,13,1,14],[26,4,14,2,15],[24,4,12,4,13],[28,6,15,2,16]],
+  };
+  const ALIGN = [[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50]];
+  const REMAINDER = [0,7,7,7,7,7,0,0,0,0]; // 버전 1–10
+  const ECBITS = { L: 1, M: 0, Q: 3, H: 2 };
+
+  /* ---------- GF(256) ---------- */
+  const EXP = new Uint8Array(512), LOG = new Uint8Array(256);
+  for (let i = 0, x = 1; i < 255; i++) {
+    EXP[i] = x; LOG[x] = i;
+    x <<= 1; if (x & 0x100) x ^= 0x11d;
+  }
+  for (let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+  const mul = (a, b) => (a === 0 || b === 0) ? 0 : EXP[LOG[a] + LOG[b]];
+
+  function rsGenerator(deg) {
+    let g = [1];
+    for (let i = 0; i < deg; i++) {
+      const ng = new Array(g.length + 1).fill(0);
+      for (let j = 0; j < g.length; j++) {
+        ng[j] ^= g[j];                       // x · g  (인덱스 0 = 최고차)
+        ng[j + 1] ^= mul(g[j], EXP[i]);      // α^i · g
+      }
+      g = ng;
+    }
+    return g;
+  }
+  function rsEncode(data, ecLen) {
+    const gen = rsGenerator(ecLen);
+    const res = new Uint8Array(ecLen);
+    for (const d of data) {
+      const factor = d ^ res[0];
+      res.copyWithin(0, 1);
+      res[ecLen - 1] = 0;
+      for (let i = 0; i < ecLen; i++) res[i] ^= mul(gen[i + 1], factor);
+    }
+    return res;
+  }
+
+  /* ---------- BCH ---------- */
+  function bch(data, poly, bits) {
+    let d = data << bits;
+    const polyBits = 32 - Math.clz32(poly);
+    while (32 - Math.clz32(d) >= polyBits) d ^= poly << (32 - Math.clz32(d) - polyBits);
+    return (data << bits) | d;
+  }
+  const formatBits = (ec, mask) => bch((ECBITS[ec] << 3) | mask, 0x537, 10) ^ 0x5412;
+  const versionBits = v => bch(v, 0x1f25, 12);
+
+  /* ---------- 비트 스트림 ---------- */
+  function buildData(bytes, ver, ec) {
+    const [ecLen, b1, d1, b2, d2] = RS[ec][ver - 1];
+    const totalData = b1 * d1 + b2 * d2;
+    const ccBits = ver <= 9 ? 8 : 16;
+    const bits = [];
+    const push = (val, n) => { for (let i = n - 1; i >= 0; i--) bits.push((val >> i) & 1); };
+    push(0b0100, 4);
+    push(bytes.length, ccBits);
+    for (const b of bytes) push(b, 8);
+    const cap = totalData * 8;
+    if (bits.length > cap) return null;
+    push(0, Math.min(4, cap - bits.length));           // 종단자
+    while (bits.length % 8) bits.push(0);               // 바이트 정렬
+    const cw = [];
+    for (let i = 0; i < bits.length; i += 8) {
+      let v = 0; for (let j = 0; j < 8; j++) v = (v << 1) | bits[i + j];
+      cw.push(v);
+    }
+    const PAD = [0xec, 0x11];
+    for (let i = 0; cw.length < totalData; i++) cw.push(PAD[i % 2]);
+
+    // 블록 분할 → RS → 인터리브
+    const blocks = [], ecs = [];
+    let p = 0;
+    for (let i = 0; i < b1 + b2; i++) {
+      const len = i < b1 ? d1 : d2;
+      const blk = cw.slice(p, p + len); p += len;
+      blocks.push(blk); ecs.push(rsEncode(blk, ecLen));
+    }
+    const out = [];
+    const maxD = Math.max(d1, d2);
+    for (let i = 0; i < maxD; i++)
+      for (const b of blocks) if (i < b.length) out.push(b[i]);
+    for (let i = 0; i < ecLen; i++)
+      for (const e of ecs) out.push(e[i]);
+    return out;
+  }
+
+  /* ---------- 매트릭스 ---------- */
+  function buildMatrix(ver, ec, codewords, mask) {
+    const size = ver * 4 + 17;
+    const m = Array.from({ length: size }, () => new Int8Array(size).fill(-1)); // -1 = 미배치
+    const set = (r, c, v) => { if (r >= 0 && r < size && c >= 0 && c < size) m[r][c] = v; };
+
+    const finder = (r, c) => {
+      for (let i = -1; i <= 7; i++) for (let j = -1; j <= 7; j++) {
+        const rr = r + i, cc = c + j;
+        if (rr < 0 || rr >= size || cc < 0 || cc >= size) continue;
+        const inRing = (i >= 0 && i <= 6 && (j === 0 || j === 6)) || (j >= 0 && j <= 6 && (i === 0 || i === 6));
+        const inCore = i >= 2 && i <= 4 && j >= 2 && j <= 4;
+        set(rr, cc, inRing || inCore ? 1 : 0);
+      }
+    };
+    finder(0, 0); finder(0, size - 7); finder(size - 7, 0);
+
+    for (let i = 8; i < size - 8; i++) { set(6, i, i % 2 === 0 ? 1 : 0); set(i, 6, i % 2 === 0 ? 1 : 0); }
+
+    for (const r of ALIGN[ver - 1]) for (const c of ALIGN[ver - 1]) {
+      if ((r === 6 && c === 6) || (r === 6 && c === size - 7) || (r === size - 7 && c === 6)) continue;
+      for (let i = -2; i <= 2; i++) for (let j = -2; j <= 2; j++)
+        set(r + i, c + j, (Math.abs(i) === 2 || Math.abs(j) === 2 || (i === 0 && j === 0)) ? 1 : 0);
+    }
+
+    set(size - 8, 8, 1); // 다크 모듈
+
+    // 포맷 정보 영역 예약
+    for (let i = 0; i < 9; i++) { if (m[8][i] === -1) set(8, i, 0); if (m[i][8] === -1) set(i, 8, 0); }
+    for (let i = 0; i < 8; i++) { set(8, size - 1 - i, 0); set(size - 1 - i, 8, 0); }
+    // 버전 정보 영역 예약 (v7+)
+    if (ver >= 7) for (let i = 0; i < 6; i++) for (let j = 0; j < 3; j++) {
+      set(size - 11 + j, i, 0); set(i, size - 11 + j, 0);
+    }
+
+    const reserved = m.map(row => Array.from(row, v => v !== -1));
+
+    // 데이터 지그재그 배치 + 마스킹
+    const maskFn = [
+      (r, c) => (r + c) % 2 === 0,
+      (r) => r % 2 === 0,
+      (r, c) => c % 3 === 0,
+      (r, c) => (r + c) % 3 === 0,
+      (r, c) => (Math.floor(r / 2) + Math.floor(c / 3)) % 2 === 0,
+      (r, c) => ((r * c) % 2) + ((r * c) % 3) === 0,
+      (r, c) => (((r * c) % 2) + ((r * c) % 3)) % 2 === 0,
+      (r, c) => (((r + c) % 2) + ((r * c) % 3)) % 2 === 0,
+    ][mask];
+
+    let bitIdx = 0;
+    const totalBits = codewords.length * 8;
+    const nextBit = () => {
+      if (bitIdx >= totalBits) return 0;                // 나머지 비트는 0
+      const b = (codewords[bitIdx >> 3] >> (7 - (bitIdx & 7))) & 1;
+      bitIdx++; return b;
+    };
+    for (let right = size - 1; right >= 1; right -= 2) {
+      if (right === 6) right = 5;                       // 세로 타이밍 열 건너뜀
+      for (let v = 0; v < size; v++) {
+        for (let j = 0; j < 2; j++) {
+          const c = right - j;
+          const upward = ((right + 1) & 2) === 0;
+          const r = upward ? size - 1 - v : v;
+          if (reserved[r][c]) continue;
+          let bit = nextBit();
+          if (maskFn(r, c)) bit ^= 1;
+          m[r][c] = bit;
+        }
+      }
+    }
+
+    // 포맷 정보
+    const fmt = formatBits(ec, mask);
+    for (let i = 0; i < 15; i++) {
+      const b = (fmt >> i) & 1;
+      // 1번째 사본: 좌상단 — 세로줄(열 8)을 위에서부터, 이어서 가로줄(행 8)을 오른쪽에서 왼쪽으로
+      if (i < 6) set(i, 8, b);
+      else if (i === 6) set(7, 8, b);
+      else if (i === 7) set(8, 8, b);
+      else if (i === 8) set(8, 7, b);
+      else set(8, 14 - i, b);
+      // 2번째 사본: 행 8 오른쪽 끝 / 열 8 아래쪽 끝
+      if (i < 8) set(8, size - 1 - i, b);
+      else set(size - 15 + i, 8, b);
+    }
+    set(size - 8, 8, 1); // 다크 모듈 — 포맷 예약이 덮어쓰므로 마지막에 다시 찍는다
+    // 버전 정보
+    if (ver >= 7) {
+      const vb = versionBits(ver);
+      for (let i = 0; i < 18; i++) {
+        const b = (vb >> i) & 1;
+        set(size - 11 + (i % 3), Math.floor(i / 3), b);
+        set(Math.floor(i / 3), size - 11 + (i % 3), b);
+      }
+    }
+    return m;
+  }
+
+  /* ---------- 마스크 평가 ---------- */
+  function penalty(m) {
+    const n = m.length;
+    let p = 0;
+    const runScore = (line) => {
+      let s = 0, run = 1;
+      for (let i = 1; i < line.length; i++) {
+        if (line[i] === line[i - 1]) run++;
+        else { if (run >= 5) s += 3 + (run - 5); run = 1; }
+      }
+      if (run >= 5) s += 3 + (run - 5);
+      return s;
+    };
+    const P1 = [1,0,1,1,1,0,1,0,0,0,0], P2 = [0,0,0,0,1,0,1,1,1,0,1];
+    const findPat = (line) => {
+      let s = 0;
+      for (let i = 0; i + 11 <= line.length; i++) {
+        let a = true, b = true;
+        for (let j = 0; j < 11; j++) { if (line[i+j] !== P1[j]) a = false; if (line[i+j] !== P2[j]) b = false; }
+        if (a) s += 40; if (b) s += 40;
+      }
+      return s;
+    };
+    for (let r = 0; r < n; r++) {
+      const row = Array.from(m[r]), col = m.map(x => x[r]);
+      p += runScore(row) + runScore(col) + findPat(row) + findPat(col);
+    }
+    for (let r = 0; r < n - 1; r++) for (let c = 0; c < n - 1; c++) {
+      const v = m[r][c];
+      if (v === m[r][c+1] && v === m[r+1][c] && v === m[r+1][c+1]) p += 3;
+    }
+    let dark = 0;
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) dark += m[r][c];
+    p += 10 * Math.floor(Math.abs(dark * 100 / (n * n) - 50) / 5);
+    return p;
+  }
+
+  /* ---------- 공개 API ---------- */
+  function encode(text, ec = "Q", minVer = 1) {
+    const bytes = Array.from(new TextEncoder().encode(text));
+    for (let ver = minVer; ver <= 10; ver++) {
+      const cw = buildData(bytes, ver, ec);
+      if (!cw) continue;
+      let best = null, bestP = Infinity;
+      for (let mask = 0; mask < 8; mask++) {
+        const m = buildMatrix(ver, ec, cw, mask);
+        const p = penalty(m);
+        if (p < bestP) { bestP = p; best = m; }
+      }
+      return { version: ver, ec, size: best.length, modules: best.map(r => Array.from(r)) };
+    }
+    throw new Error("QR: 데이터가 버전 10을 넘습니다 — URL을 줄이세요");
+  }
+  return { encode };
+})();
+
+
+/* ============================================================
+   상태
+   ============================================================ */
+const PER_SHEET = 10;
+const CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // 혼동 문자(I,L,O,0,1) 제외 — 매장 앱 genCode() 와 동일
+const ST = {
+  kind: "mix", rate: 50, exp: "", qty: 10, start: 1,
+  reserveUrl: "https://deall-commits.github.io/gd-cafe/r/",
+  insta: "", tel: "", codes: [],
+};
+
+const $ = id => document.getElementById(id);
+const pad = (n, w) => String(n).padStart(w, "0");
+const esc = s => String(s ?? "").replace(/[&<>"']/g,
+  c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmtDate = iso => iso ? iso.split("-").join(".") : "";
+function defaultExpiry() {
+  const d = new Date(); d.setDate(d.getDate() + 30);
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1, 2)}-${pad(d.getDate(), 2)}`;
+}
+function makeCodes(n) {
+  const seen = new Set(), out = [];
+  while (out.length < n) {
+    let c = "";
+    for (let i = 0; i < 4; i++) c += CHARS[Math.floor(Math.random() * CHARS.length)];
+    if (!seen.has(c)) { seen.add(c); out.push(c); }
+  }
+  return out;
+}
+
+/* ============================================================
+   QR → SVG
+   · 로고 넉아웃·둥근 모듈·컬러 QR 전부 금지. 순수 흑백 사각.
+   · 가로로 이어지는 모듈을 하나의 사각형으로 합쳐 인접 모듈 사이
+     흰 실선(hairline)이 생기는 렌더링 버그를 피한다.
+   · EC 는 Q(25%) — 명함은 지갑에서 긁히고 쿠폰은 접힌다.
+   ============================================================ */
+const QR_CACHE = new Map();
+let QR_LAST = null;
+function qrSVG(text) {
+  if (QR_CACHE.has(text)) { QR_LAST = QR_CACHE.get(text).info; return QR_CACHE.get(text).svg; }
+  const quiet = 4;   // 규격 최소 4모듈
+  let svg, info;
+  try {
+    const q = QR.encode(text, "Q");
+    const n = q.size, side = n + quiet * 2;
+    let d = "";
+    for (let r = 0; r < n; r++) {
+      let c = 0;
+      while (c < n) {
+        if (!q.modules[r][c]) { c++; continue; }
+        let len = 1;
+        while (c + len < n && q.modules[r][c + len]) len++;
+        d += `M${c + quiet} ${r + quiet}h${len}v1h-${len}z`;
+        c += len;
+      }
+    }
+    svg = `<svg viewBox="0 0 ${side} ${side}" shape-rendering="crispEdges" role="img" aria-label="예약 QR 코드">` +
+          `<rect width="${side}" height="${side}" fill="#fff"/>` +
+          `<path d="${d}" fill="var(--p-ink,#14100e)"/></svg>`;
+    info = { ok: true, version: q.version, modules: n, side, mm: 20.2 / side };
+  } catch (e) {
+    svg = `<svg viewBox="0 0 10 10" role="img" aria-label="QR 생성 실패"><rect width="10" height="10" fill="#fff" ` +
+          `stroke="var(--p-ink,#14100e)" stroke-width=".2"/></svg>`;
+    info = { ok: false };
+  }
+  QR_CACHE.set(text, { svg, info });
+  QR_LAST = info;
+  return svg;
+}
+
+/* ============================================================
+   카드
+   ============================================================ */
+function head(right) {
+  return `<div class="c-head">
+    <svg class="med" viewBox="0 0 100 100" role="img" aria-label="GD카페"><use href="#gd-med"/></svg>
+    <span class="wordmark"><b>GD카페</b><span>CHEONGDAM · SEOUL</span></span>
+    ${right || ""}
+  </div>
+  <div class="swagwrap"><i class="ln"></i>
+    <svg class="swag" viewBox="0 0 816 153" aria-hidden="true"><use href="#gd-swag"/></svg>
+    <i class="ln"></i></div>`;
+}
+
+function couponHTML(i) {
+  const no = ST.start + i, code = ST.codes[i] || "----", rate = ST.rate;
+  return `<article class="card coupon">
+  ${head(`<span class="k-no"><span class="n">No. ${pad(no, 4)}</span><span class="issue">발급 <u>&nbsp;</u> . <u>&nbsp;</u></span></span>`)}
+  <div class="k-hero">
+    <span class="k-off"><span class="num">${rate}</span><span class="pct">%</span></span>
+    <span class="k-say">
+      <b>음료 1잔 ${rate === 50 ? "반값" : rate + "% 할인"}</b>
+      <span>검은 샹들리에 아래에서</span>
+    </span>
+    <span class="k-seal">
+      <svg viewBox="0 0 207.4 207.4" aria-hidden="true"><use href="#gd-seal"/></svg>
+      <em>직인</em>
+    </span>
+  </div>
+  <div class="hair"></div>
+  <div class="k-foot">
+    <ul class="k-terms">
+      <li>1인 1매 · 1회 1잔</li>
+      <li>타 할인 · 쿠폰과 중복 불가</li>
+      <li>사본 불가 · 사용 시 회수</li>
+    </ul>
+    <span class="k-meta">
+      <span class="k-exp">유효 <b>${esc(fmtDate(ST.exp))}</b> 까지</span>
+      <span class="k-code">대조 <b>${esc(code)}</b></span>
+    </span>
+  </div>
+</article>`;
+}
+
+function cardHTML() {
+  const lines = [
+    `<b>서울 강남구 삼성로 716 (청담동) 2층</b>`,
+    `매일 11:00 – 22:00 · 라스트오더 21:30`,
+    `예약은 <b>회신을 받으신 뒤 확정</b>됩니다`,
+  ];
+  const contact = [];
+  if (ST.insta) contact.push(`인스타그램 @${esc(ST.insta.replace(/^@/, ""))}`);
+  if (ST.tel) contact.push(esc(ST.tel));
+  if (contact.length) lines.push(contact.join(" · "));
+  return `<article class="card namecard">
+  ${head("")}
+  <div class="b-body">
+    <div class="b-left">
+      <p class="b-tag">검은 샹들리에 아래,<br>오늘의 나를 다시 만나는 곳</p>
+      <div class="b-info">${lines.join("<br>")}</div>
+    </div>
+    <div class="b-qr">
+      ${qrSVG(ST.reserveUrl)}
+      <span class="ko">자리를 남겨두세요</span>
+      <span class="en">SCAN TO RESERVE</span>
+    </div>
+  </div>
+</article>`;
+}
+
+/* ============================================================
+   시트
+   ============================================================ */
+const CUT_X = [15, 105, 195];
+const CUT_Y = [23.4, 73.4, 123.4, 173.4, 223.4, 273.4];
+function ticks() {
+  let h = "";
+  for (const x of CUT_X) {
+    h += `<i class="tick v up" style="left:${x}mm;top:17.4mm"></i>`;
+    h += `<i class="tick v down" style="left:${x}mm;top:274.4mm"></i>`;
+  }
+  for (const y of CUT_Y) {
+    h += `<i class="tick h left" style="top:${y}mm;left:9mm"></i>`;
+    h += `<i class="tick h right" style="top:${y}mm;left:196mm"></i>`;
+  }
+  return h;
+}
+
+/* ============================================================
+   정숙 영역 검사 — 이 PC 의 실제 글꼴로 조판이 5mm 안쪽에 들어오는지 본다.
+   매장 윈도우 PC 에 Pretendard 가 없으면 Malgun Gothic 으로 떨어지고
+   글자 폭이 달라져 재단선 쪽으로 밀릴 수 있다. 그때 조용히 인쇄되지 않도록
+   화면에서 먼저 경고한다.
+   ============================================================ */
+function checkQuietZone() {
+  const MM = 96 / 25.4, QUIET = 5, TOL = 0.15;   // 렌더링 반올림 여유
+  const bad = [];
+  document.querySelectorAll(".card").forEach((card, i) => {
+    const c = card.getBoundingClientRect();
+    let worst = 0, side = "";
+    const test = b => {
+      if (!b || (!b.width && !b.height)) return;
+      const over = [
+        ["왼쪽", (c.left + QUIET * MM) - b.left],
+        ["오른쪽", b.right - (c.right - QUIET * MM)],
+        ["위", (c.top + QUIET * MM) - b.top],
+        ["아래", b.bottom - (c.bottom - QUIET * MM)],
+      ];
+      for (const [nm, px] of over) {
+        const mm = px / MM;
+        if (mm > TOL && mm > worst) { worst = mm; side = nm; }
+      }
+    };
+    // 글자는 요소 박스가 아니라 실제 잉크 범위로 잰다 —
+    // white-space:nowrap 은 부모 박스를 넘어서도 부모 폭을 그대로 보고하기 때문이다.
+    const walker = document.createTreeWalker(card, NodeFilter.SHOW_TEXT);
+    const range = document.createRange();
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+      if (!n.nodeValue.trim()) continue;
+      range.selectNodeContents(n);
+      for (const r of range.getClientRects()) test(r);
+    }
+    // 도형(svg·룰)은 요소 박스로 잰다
+    card.querySelectorAll("svg, .hair, .swagwrap .ln, .k-no .issue u").forEach(el => {
+      if (el.getClientRects().length) test(el.getBoundingClientRect());
+    });
+    if (worst > TOL) bad.push({ i: i + 1, mm: worst, side, kind: card.classList.contains("coupon") ? "쿠폰" : "명함" });
+  });
+  return bad;
+}
+
+function render() {
+  const sheets = Math.max(1, Math.ceil(ST.qty / PER_SHEET));
+  let html = "", couponIdx = 0;
+  for (let s = 0; s < sheets; s++) {
+    let cells = "";
+    for (let c = 0; c < PER_SHEET; c++) {
+      const slot = s * PER_SHEET + c;
+      if (slot >= ST.qty) { cells += `<div></div>`; continue; }
+      // 혼합: 왼쪽 열 쿠폰 · 오른쪽 열 명함 — 잘라서 한 벌로 건넨다
+      const isCard = ST.kind === "card" || (ST.kind === "mix" && c % 2 === 1);
+      cells += isCard ? cardHTML() : couponHTML(couponIdx++);
+    }
+    html += `<section class="sheet">${ticks()}
+      <div class="grid">${cells}</div>
+      <div class="sheet-foot">
+        <span>GD카페 · 서울특별시 강남구 삼성로 716 (청담동) 2층<br>바깥 틱 마크에 맞춰 재단 — 세로 3줄 · 가로 6줄</span>
+        <span class="gauge">
+          <svg viewBox="0 0 412 50.3" aria-hidden="true"><use href="#gd-ruler"/></svg>
+          <b>40mm</b> — 자로 재서 40.0이면 배율 100%
+        </span>
+      </div>
+    </section>`;
+  }
+  $("stage").innerHTML = html;
+
+  const coupons = ST.kind === "card" ? 0 : ST.kind === "mix" ? Math.ceil(ST.qty / 2) : ST.qty;
+  const cards = ST.qty - coupons;
+  const q = QR_LAST;
+  let qrNote = "";
+  if (cards > 0 && q) {
+    qrNote = q.ok
+      ? ` QR은 버전 ${q.version}(${q.modules}모듈) · 20.2mm 배치에서 모듈 ${q.mm.toFixed(3)}mm` +
+        (q.mm < 0.45 ? ` <span class="bad">— 0.45mm 미만이라 가정용 인쇄에서 위험합니다. 예약 URL을 줄이세요.</span>`
+                     : ` <span class="warn">— 안전 범위</span>`)
+      : ` <span class="bad">QR 생성 실패 — 예약 URL이 너무 깁니다.</span>`;
+  }
+  $("hint").innerHTML =
+    `A4 <b>${sheets}장</b> — 쿠폰 <b>${coupons}매</b> · 명함 <b>${cards}매</b> (90 × 50 mm, 한 장에 10면). ` +
+    `재단 <b>9줄</b>(세로 3 · 가로 6)이면 10장이 떨어집니다.<br>` +
+    `인쇄 대화상자: <b>용지 A4</b> · <b>배율 100%(「용지에 맞춤」 아님)</b> · <b>여백 기본값</b>. ` +
+    `<span class="warn">뽑은 뒤 시트 하단 검침자를 자로 재세요 — 40.0mm 가 아니면 배율이 틀린 것이라 재단선이 전부 어긋납니다.</span> ` +
+    `재단은 종이 가장자리가 아니라 인쇄된 틱 마크에 맞추세요.` + qrNote;
+
+  const bad = checkQuietZone();
+  if (bad.length) {
+    const w = bad.reduce((a, b) => (b.mm > a.mm ? b : a));
+    $("hint").innerHTML +=
+      `<br><span class="bad">⚠ 이 PC 의 글꼴에서 ${bad.length}면의 내용이 5mm 정숙 영역을 넘습니다 ` +
+      `(가장 심한 곳: ${w.kind} ${w.i}번 ${w.side} ${w.mm.toFixed(2)}mm 초과). ` +
+      `그대로 재단하면 글자가 잘릴 수 있습니다 — 문구를 줄이거나 Pretendard 를 설치하세요.</span>`;
+  }
+}
+
+/* ============================================================
+   조작
+   ============================================================ */
+function syncCodes() {
+  if (ST.codes.length < ST.qty) ST.codes = ST.codes.concat(makeCodes(ST.qty - ST.codes.length));
+}
+const num = (v, lo, hi, dflt) => { const n = parseInt(v, 10); return isNaN(n) ? dflt : Math.min(hi, Math.max(lo, n)); };
+
+$("i-kind").addEventListener("click", e => {
+  const b = e.target.closest("button[data-k]"); if (!b) return;
+  ST.kind = b.dataset.k;
+  [...e.currentTarget.querySelectorAll("button")].forEach(x => x.classList.toggle("on", x === b));
+  render();
+});
+$("i-rate").addEventListener("input", e => { ST.rate = num(e.target.value, 1, 100, 50); render(); });
+$("i-exp").addEventListener("input", e => { ST.exp = e.target.value; render(); });
+$("i-qty").addEventListener("input", e => { ST.qty = num(e.target.value, 1, 500, 10); syncCodes(); render(); });
+$("i-start").addEventListener("input", e => { ST.start = num(e.target.value, 1, 999999, 1); render(); });
+$("i-url").addEventListener("input", e => { ST.reserveUrl = e.target.value.trim(); render(); });
+$("i-insta").addEventListener("input", e => { ST.insta = e.target.value.trim(); render(); });
+$("i-tel").addEventListener("input", e => { ST.tel = e.target.value.trim(); render(); });
+$("b-recode").addEventListener("click", () => { ST.codes = makeCodes(ST.qty); render(); });
+$("b-print").addEventListener("click", () => window.print());
+
+ST.exp = defaultExpiry();
+$("i-exp").value = ST.exp;
+$("i-url").value = ST.reserveUrl;
+syncCodes();
+render();
+
+</script>
+</body>
+</html>
