@@ -600,6 +600,10 @@ footer .f-mono { font-family: var(--serif); font-size: 20px; color: var(--gold-d
    "public" : 공개 브랜드 사이트 (살롱·메뉴·스위치 안내·오시는 길)
    "store"  : 매장 태블릿 앱 (위 + 스위치 스튜디오 + 직원 화면 4종) */
 var GD_MODE = "store";
+/* AI 스타일 변환 실가동 여부. runAiSwitch()가 스텁인 동안은 false —
+   손님 눈에 닿는 문구(주문표 인쇄물·카운터 안내)에서 변환 약속을 빼기 위한 스위치다.
+   실가동일에 build_sites.py의 SWITCH_LIVE와 함께 true로 바꾼다. */
+var GD_SWITCH_LIVE = false;
 </script>
 <!-- ===================== 상단 바 ===================== -->
 <header class="topbar">
@@ -703,7 +707,7 @@ var GD_MODE = "store";
       <div class="ateliers">
         <div class="atelier">
           <figure>
-            <div class="ph"><img src="img/otteokhae.jpg" alt="오떡해의 첫돌 백설기와 오색 떡" loading="lazy"></div>
+            <div class="ph"><img src="../img/otteokhae.jpg" alt="오떡해의 첫돌 백설기와 오색 떡" loading="lazy"></div>
             <figcaption>
               <div class="a-role">RICE CAKE</div>
               <h3>오떡해</h3>
@@ -715,7 +719,7 @@ var GD_MODE = "store";
         </div>
         <div class="atelier">
           <figure>
-            <div class="ph"><img src="img/easterseoul.jpg" alt="EASTER SEOUL의 블루 플로럴 디저트 패키지" loading="lazy"></div>
+            <div class="ph"><img src="../img/easterseoul.jpg" alt="EASTER SEOUL의 블루 플로럴 디저트 패키지" loading="lazy"></div>
             <figcaption>
               <div class="a-role">PATISSERIE</div>
               <h3>EASTER SEOUL</h3>
@@ -727,7 +731,7 @@ var GD_MODE = "store";
         </div>
         <div class="atelier">
           <figure>
-            <div class="ph"><img src="img/bagelist.jpg" alt="BAGELIST의 약국 서랍장 위에 진열된 베이글" loading="lazy"></div>
+            <div class="ph"><img src="../img/bagelist.jpg" alt="BAGELIST의 약국 서랍장 위에 진열된 베이글" loading="lazy"></div>
             <figcaption>
               <div class="a-role">BAGEL</div>
               <h3>BAGELIST</h3>
@@ -807,23 +811,23 @@ var GD_MODE = "store";
       <div class="visit-grid">
         <div class="visit-card">
           <h3>ADDRESS</h3>
-          <p class="big">서울특별시 강남구 삼성로 716 (청담동) 2층</p>
-          <p>청담역세권 · 건물 2층</p>
+          <p class="big">서울특별시 강남구 삼성로 716 리임빌딩 2층</p>
+          <p>청담역 9번 출구 도보 5분 · 1층 올리브영 위</p>
         </div>
         <div class="visit-card">
           <h3>HOURS</h3>
-          <p class="big">매일 11:00 – 22:00</p>
-          <p>라스트 오더 21:30</p>
-        </div>
-        <div class="visit-card">
-          <h3>STYLE SWITCH</h3>
-          <p class="big">메뉴 1개 = 스위치 1회</p>
-          <p>당일 매장 내 사용</p>
+          <p class="big">매일 09:00 – 21:00</p>
+          <p>라스트 오더 20:30</p>
         </div>
         <div class="visit-card">
           <h3>CONTACT</h3>
-          <p class="big">인스타그램 DM</p>
+          <p class="big"><a href="tel:+821034318482" style="color:inherit">010-3431-8482</a></p>
           <p>단체 · 촬영 대관 문의</p>
+        </div>
+        <div class="visit-card">
+          <h3>ENGLISH</h3>
+          <p class="big">English menu available</p>
+          <p>2F, 716 Samseong-ro, Gangnam-gu</p>
         </div>
       </div>
     </div>
@@ -1527,7 +1531,7 @@ function renderCounter() {
         <span class="n">${fmtW(totalAmt)}</span>
       </div>
       <div style="font-size:12.5px;color:var(--ink-3);margin-bottom:12px">
-        완료 시 스타일 스위치 <b style="color:var(--gold-soft)">${totalQty}회</b> 코드가 발급되고, 주문현황 보드에 올라갑니다.
+        완료 시 ${GD_SWITCH_LIVE ? `스타일 스위치 <b style="color:var(--gold-soft)">${totalQty}회</b> 코드가 발급되고, ` : ""}주문현황 보드에 올라갑니다.
       </div>
       <button class="btn gold" id="ct-done" style="width:100%" ${totalQty === 0 ? "disabled" : ""}>주문 완료 · 코드 발급</button>
       <button class="btn ghost small" id="ct-clear" style="width:100%;margin-top:8px" ${totalQty === 0 ? "disabled" : ""}>비우기</button>
@@ -1603,7 +1607,7 @@ function completeOrder() {
   document.getElementById("om-code").textContent = "GD-" + credit.code;
   document.getElementById("om-sub").innerHTML =
     `${esc(order.otype)}${order.table ? " · 테이블 " + esc(order.table) : ""} · 합계 <b>${fmtW(order.total)}</b> (${esc(order.pay)} 기록)<br>` +
-    `스타일 스위치 <b>${qty}회</b> — 손님께 코드를 안내해 주세요.`;
+    (GD_SWITCH_LIVE ? `스타일 스위치 <b>${qty}회</b> — 손님께 코드를 안내해 주세요.` : "");
   document.getElementById("order-modal").classList.add("open");
   renderCounter();
 }
@@ -1684,10 +1688,12 @@ function makeOrderSlip(order, credit) {
   g.fillText("GD-" + credit.code, W / 2, y + 80);
   g.fillStyle = "#8f8064";
   g.font = "12px 'Malgun Gothic', sans-serif";
-  g.fillText("사이트 「스타일 스위치」에서 입력 · 당일 사용 · " + credit.total + "회", W / 2, y + 103);
+  g.fillText(GD_SWITCH_LIVE
+    ? "사이트 「스타일 스위치」에서 입력 · 당일 사용 · " + credit.total + "회"
+    : "주문번호 · 픽업 시 보여주세요", W / 2, y + 103);
   g.fillStyle = mid;
   g.font = "12px 'Malgun Gothic', sans-serif";
-  g.fillText("서울특별시 강남구 삼성로 716 (청담동) 2층 · GD카페", W / 2, H - 28);
+  g.fillText("A Good Day · 삼성로 716 리임빌딩 2층 · 010-3431-8482", W / 2, H - 28);
   cv.toBlob(blob => { if (blob) saveFile("gd_order_" + order.id + ".png", blob, "image/png"); }, "image/png");
 }
 

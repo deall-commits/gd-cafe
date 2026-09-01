@@ -1,11 +1,44 @@
 <!DOCTYPE html>
 <html lang="ko">
 <meta charset="utf-8">
-<meta name="description" content="청담 GD카페 — 검은 샹들리에 아래에서, 한 잔의 주문이 한 번의 변신이 되는 곳. 서울 강남구 삼성로 716 2층.">
-<meta property="og:title" content="GD카페 — 검은 샹들리에 아래, 오늘의 나">
-<meta property="og:description" content="한 잔 = 한 번의 변신. 청담 GD카페">
+<meta name="description" content="청담 삼성로 716 리임빌딩 2층. 통창의 빛과 검은 샹들리에 아래에서 스페셜티 원두 3종 중 골라 마시는 조용한 2층 카페. 매일 09:00–21:00. English menu available.">
+<meta property="og:title" content="A Good Day — 청담 삼성로 716, 2층">
+<meta property="og:description" content="청담 삼성로 716 리임빌딩 2층. 통창의 빛과 검은 샹들리에 아래에서 스페셜티 원두 3종 중 골라 마시는 조용한 2층 카페. 매일 09:00–21:00. English menu available.">
 <meta property="og:type" content="website">
-<title>GD카페 — 검은 샹들리에 아래, 오늘의 나</title>
+<meta property="og:url" content="https://deall-commits.github.io/gd-cafe/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://deall-commits.github.io/gd-cafe/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CafeOrCoffeeShop",
+  "name": "A Good Day",
+  "alternateName": "GD",
+  "url": "https://deall-commits.github.io/gd-cafe/",
+  "telephone": "+82-10-3431-8482",
+  "priceRange": "\u20a9\u20a9",
+  "servesCuisine": "Coffee",
+  "currenciesAccepted": "KRW",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "2F, 716 Samseong-ro",
+    "addressLocality": "Gangnam-gu",
+    "addressRegion": "Seoul",
+    "postalCode": "06074",
+    "addressCountry": "KR"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 37.5199093, "longitude": 127.0500242 },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "09:00", "closes": "21:00"
+  }],
+  "publicAccess": true,
+  "isAccessibleForFree": false
+}
+</script>
+<title>A Good Day — 청담 2층 카페</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0908'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23e9d3a0'%3EGD%3C/text%3E%3C/svg%3E">
 <style>
@@ -603,6 +636,10 @@ footer .f-mono { font-family: var(--serif); font-size: 20px; color: var(--gold-d
    "public" : 공개 브랜드 사이트 (살롱·메뉴·스위치 안내·오시는 길)
    "store"  : 매장 태블릿 앱 (위 + 스위치 스튜디오 + 직원 화면 4종) */
 var GD_MODE = "public";
+/* AI 스타일 변환 실가동 여부. runAiSwitch()가 스텁인 동안은 false —
+   손님 눈에 닿는 문구(주문표 인쇄물·카운터 안내)에서 변환 약속을 빼기 위한 스위치다.
+   실가동일에 build_sites.py의 SWITCH_LIVE와 함께 true로 바꾼다. */
+var GD_SWITCH_LIVE = false;
 </script>
 <!-- ===================== 상단 바 ===================== -->
 <header class="topbar">
@@ -611,7 +648,6 @@ var GD_MODE = "public";
     <nav class="nav" id="nav">
       <a href="#home" data-v="home">살롱</a>
       <a href="#menu" data-v="menu">메뉴</a>
-      <a href="#switch" data-v="switch">스타일 스위치</a>
       <a href="#visit" data-v="visit">오시는 길</a>
       <span class="staff-sep"></span>
       <a href="#counter" data-v="counter" class="staff">카운터</a>
@@ -634,9 +670,9 @@ var GD_MODE = "public";
     <div class="hero-body">
       <div class="mono">GD<small>Cheongdam · Seoul</small></div>
       <h1>검은 샹들리에 아래,<br>오늘의 나를 다시 만나는 곳</h1>
-      <p class="sub">한 잔의 주문이 한 번의 변신이 됩니다.</p>
+      <p class="sub">통창의 빛과 샹들리에. 온전한 당신의 하루를 위한 2층.</p>
       <div class="hero-cta">
-        <a class="btn gold" href="#switch">스타일 스위치</a>
+        <a class="btn gold" href="#visit">오시는 길</a>
         <a class="btn ghost" href="#menu">메뉴</a>
       </div>
     </div>
@@ -664,8 +700,8 @@ var GD_MODE = "public";
         </div>
         <div class="pillar">
           <div class="p-num">IV</div>
-          <h3>스타일 스위치</h3>
-          <p>한 잔마다 한 번의 변신</p>
+          <h3>조용한 2층</h3>
+          <p>길에서 보이지 않는 통창 자리</p>
         </div>
       </div>
     </div>
@@ -676,7 +712,7 @@ var GD_MODE = "public";
       <div class="ritual">
         <div class="ritual-step">
           <div class="r-num">1</div>
-          <h3>주문</h3><p>스위치 코드 받기</p>
+          <h3>주문</h3><p>원두 3종 중 택1</p>
         </div>
         <div class="ritual-step">
           <div class="r-num">2</div>
@@ -688,11 +724,11 @@ var GD_MODE = "public";
         </div>
         <div class="ritual-step">
           <div class="r-num">4</div>
-          <h3>변신</h3><p>옷 · 헤어 · 무드</p>
+          <h3>머무름</h3><p>통창 아래 한 시간</p>
         </div>
         <div class="ritual-step">
           <div class="r-num">5</div>
-          <h3>소장</h3><p>두 장의 오늘</p>
+          <h3>다음 잔</h3><p>올 때마다 다른 큐레이션</p>
         </div>
       </div>
     </div>
@@ -777,29 +813,12 @@ var GD_MODE = "public";
     <div class="section">
       <div class="kicker">Menu</div>
       <h2>메뉴</h2>
-      <div class="menu-note">메뉴 1개 = <b>스타일 스위치 1회</b> · 코드는 주문 시 드립니다.</div>
+      <div class="menu-note">원두는 주문하실 때 <b>3종 중 하나</b>를 고르실 수 있습니다.</div>
       <div id="menu-list"></div>
     </div>
   </div>
 </section>
 
-<!-- ===================== 스타일 스위치 ===================== -->
-<section class="view" id="view-switch">
-  <div class="wrap">
-    <div class="switch-hero">
-      <div class="kicker">Style Switch</div>
-      <h2>같은 사진, 다른 나</h2>
-      <div class="switch-rule">한 잔 <span class="eq">=</span> 한 번의 변신</div>
-    </div>
-    <div class="stepper" id="sw-stepper">
-      <span data-s="0">① 코드</span><span data-s="1">② 사진</span><span data-s="2">③ 헤어</span><span data-s="3">④ 의상</span><span data-s="4">⑤ 무드</span><span data-s="5">⑥ 변신</span>
-    </div>
-    <div id="sw-body"></div>
-    <p class="privacy-note" style="text-align:center" id="sw-privacy">
-      사진은 이 화면 안에서만 사용되며 저장되거나 전송되지 않습니다.
-    </p>
-  </div>
-</section>
 
 <!-- ===================== 오시는 길 ===================== -->
 <section class="view" id="view-visit">
@@ -810,23 +829,23 @@ var GD_MODE = "public";
       <div class="visit-grid">
         <div class="visit-card">
           <h3>ADDRESS</h3>
-          <p class="big">서울특별시 강남구 삼성로 716 (청담동) 2층</p>
-          <p>청담역세권 · 건물 2층</p>
+          <p class="big">서울특별시 강남구 삼성로 716 리임빌딩 2층</p>
+          <p>청담역 9번 출구 도보 5분 · 1층 올리브영 위</p>
         </div>
         <div class="visit-card">
           <h3>HOURS</h3>
-          <p class="big">매일 11:00 – 22:00</p>
-          <p>라스트 오더 21:30</p>
-        </div>
-        <div class="visit-card">
-          <h3>STYLE SWITCH</h3>
-          <p class="big">메뉴 1개 = 스위치 1회</p>
-          <p>당일 매장 내 사용</p>
+          <p class="big">매일 09:00 – 21:00</p>
+          <p>라스트 오더 20:30</p>
         </div>
         <div class="visit-card">
           <h3>CONTACT</h3>
-          <p class="big">인스타그램 DM</p>
+          <p class="big"><a href="tel:+821034318482" style="color:inherit">010-3431-8482</a></p>
           <p>단체 · 촬영 대관 문의</p>
+        </div>
+        <div class="visit-card">
+          <h3>ENGLISH</h3>
+          <p class="big">English menu available</p>
+          <p>2F, 716 Samseong-ro, Gangnam-gu</p>
         </div>
       </div>
     </div>
@@ -1081,7 +1100,7 @@ async function saveFile(filename, data, mimetype) {
    라우터
    ============================================================ */
 const IS_STORE = (typeof GD_MODE === "undefined") || GD_MODE === "store";
-const PUBLIC_VIEWS = ["home", "menu", "switch", "visit"];
+const PUBLIC_VIEWS = ["home", "menu", "visit"];
 const VIEWS = IS_STORE
   ? [...PUBLIC_VIEWS, "counter", "board", "dash", "ops"]
   : PUBLIC_VIEWS;
@@ -1530,7 +1549,7 @@ function renderCounter() {
         <span class="n">${fmtW(totalAmt)}</span>
       </div>
       <div style="font-size:12.5px;color:var(--ink-3);margin-bottom:12px">
-        완료 시 스타일 스위치 <b style="color:var(--gold-soft)">${totalQty}회</b> 코드가 발급되고, 주문현황 보드에 올라갑니다.
+        완료 시 ${GD_SWITCH_LIVE ? `스타일 스위치 <b style="color:var(--gold-soft)">${totalQty}회</b> 코드가 발급되고, ` : ""}주문현황 보드에 올라갑니다.
       </div>
       <button class="btn gold" id="ct-done" style="width:100%" ${totalQty === 0 ? "disabled" : ""}>주문 완료 · 코드 발급</button>
       <button class="btn ghost small" id="ct-clear" style="width:100%;margin-top:8px" ${totalQty === 0 ? "disabled" : ""}>비우기</button>
@@ -1606,7 +1625,7 @@ function completeOrder() {
   document.getElementById("om-code").textContent = "GD-" + credit.code;
   document.getElementById("om-sub").innerHTML =
     `${esc(order.otype)}${order.table ? " · 테이블 " + esc(order.table) : ""} · 합계 <b>${fmtW(order.total)}</b> (${esc(order.pay)} 기록)<br>` +
-    `스타일 스위치 <b>${qty}회</b> — 손님께 코드를 안내해 주세요.`;
+    (GD_SWITCH_LIVE ? `스타일 스위치 <b>${qty}회</b> — 손님께 코드를 안내해 주세요.` : "");
   document.getElementById("order-modal").classList.add("open");
   renderCounter();
 }
@@ -1687,10 +1706,12 @@ function makeOrderSlip(order, credit) {
   g.fillText("GD-" + credit.code, W / 2, y + 80);
   g.fillStyle = "#8f8064";
   g.font = "12px 'Malgun Gothic', sans-serif";
-  g.fillText("사이트 「스타일 스위치」에서 입력 · 당일 사용 · " + credit.total + "회", W / 2, y + 103);
+  g.fillText(GD_SWITCH_LIVE
+    ? "사이트 「스타일 스위치」에서 입력 · 당일 사용 · " + credit.total + "회"
+    : "주문번호 · 픽업 시 보여주세요", W / 2, y + 103);
   g.fillStyle = mid;
   g.font = "12px 'Malgun Gothic', sans-serif";
-  g.fillText("서울특별시 강남구 삼성로 716 (청담동) 2층 · GD카페", W / 2, H - 28);
+  g.fillText("A Good Day · 삼성로 716 리임빌딩 2층 · 010-3431-8482", W / 2, H - 28);
   cv.toBlob(blob => { if (blob) saveFile("gd_order_" + order.id + ".png", blob, "image/png"); }, "image/png");
 }
 
